@@ -1,0 +1,2781 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🌙 Gestão de Turnos Noturnos</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#0d0d1a;font-family:'Courier New',monospace;}
+    ::-webkit-scrollbar{width:6px;height:6px;}
+    ::-webkit-scrollbar-track{background:#1a1a3e;}
+    ::-webkit-scrollbar-thumb{background:#5b21b6;border-radius:3px;}
+    select option{background:#1a1a3e;color:#e2e2f0;}
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+var useState=React.useState,useEffect=React.useEffect,useRef=React.useRef;
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i.return) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+// ─── Persistence ──────────────────────────────────────────────────────────
+var STORAGE_KEY = "turnos_noite_v5";
+var load = function load() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+  } catch (_unused) {
+    return null;
+  }
+};
+var save = function save(d) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+  } catch (_unused2) {}
+};
+var initState = function initState() {
+  return {
+    pessoas: [],
+    turno: [],
+    noites: []
+  };
+};
+
+// pessoa.historico = { nPrimeiras, nSegundas, primBom, primMau, segBom, segMau }  ← as membro do turno
+// pessoa.historicoFora = { nPrimeiras, nSegundas, primBom, primMau, segBom, segMau } ← fora do turno
+// noite.atrib = { pessoaId, beneficio:"bom"|"mau"|"nenhum", porEscolha:bool, eraTurno:bool }
+
+var p2 = function p2(v) {
+  return parseFloat(v.toFixed(2));
+};
+
+// ─── Stats ────────────────────────────────────────────────────────────────
+// Returns stats split: turno (h) and foraTurno (hF), plus combined
+function calcStats(pessoa, noites, turnoAtual) {
+  var pref = pessoa.preferencia;
+
+  // ── Turno historico (manual) ──────────────────────────────────────────
+  var h = pessoa.historico || {};
+  var nPt = h.nPrimeiras || 0,
+    nSt = h.nSegundas || 0;
+  var pBt = h.primBom || 0,
+    pMt = h.primMau || 0,
+    sBt = h.segBom || 0,
+    sMt = h.segMau || 0;
+  var contrTurno = pref === "primeiras" ? h.nSegundas || 0 : pref === "segundas" ? h.nPrimeiras || 0 : 0;
+  var totalPrefTurno = pref && pref !== "indiferente" ? (h.nPrimeiras || 0) + (h.nSegundas || 0) : 0;
+
+  // ── Fora turno historico (manual) ─────────────────────────────────────
+  var hF = pessoa.historicoFora || {};
+  var nPf = hF.nPrimeiras || 0,
+    nSf = hF.nSegundas || 0;
+  var pBf = hF.primBom || 0,
+    pMf = hF.primMau || 0,
+    sBf = hF.segBom || 0,
+    sMf = hF.segMau || 0;
+  var contrFora = pref === "primeiras" ? hF.nSegundas || 0 : pref === "segundas" ? hF.nPrimeiras || 0 : 0;
+  var totalPrefFora = pref && pref !== "indiferente" ? (hF.nPrimeiras || 0) + (hF.nSegundas || 0) : 0;
+
+  // ── From registered noites ────────────────────────────────────────────
+  noites.forEach(function (n) {
+    var _n$primeiras, _n$segundas;
+    var pa = (_n$primeiras = n.primeiras) === null || _n$primeiras === void 0 ? void 0 : _n$primeiras.find(function (a) {
+      return a.pessoaId === pessoa.id;
+    });
+    var sa = (_n$segundas = n.segundas) === null || _n$segundas === void 0 ? void 0 : _n$segundas.find(function (a) {
+      return a.pessoaId === pessoa.id;
+    });
+    var atrib = pa || sa;
+    if (!atrib) return;
+    var wasTurno = atrib.eraTurno === true;
+    if (pa) {
+      if (wasTurno) {
+        nPt++;
+        if (pa.beneficio === "bom") pBt++;
+        if (pa.beneficio === "mau") pMt++;
+      } else {
+        nPf++;
+        if (pa.beneficio === "bom") pBf++;
+        if (pa.beneficio === "mau") pMf++;
+      }
+    }
+    if (sa) {
+      if (wasTurno) {
+        nSt++;
+        if (sa.beneficio === "bom") sBt++;
+        if (sa.beneficio === "mau") sMt++;
+      } else {
+        nSf++;
+        if (sa.beneficio === "bom") sBf++;
+        if (sa.beneficio === "mau") sMf++;
+      }
+    }
+    if (pref && pref !== "indiferente") {
+      var _n$contr, _n$pref;
+      var contr = pref === "primeiras" ? "segundas" : "primeiras";
+      var naContr = (_n$contr = n[contr]) === null || _n$contr === void 0 ? void 0 : _n$contr.find(function (a) {
+        return a.pessoaId === pessoa.id;
+      });
+      var naPref = (_n$pref = n[pref]) === null || _n$pref === void 0 ? void 0 : _n$pref.find(function (a) {
+        return a.pessoaId === pessoa.id;
+      });
+      if (naContr || naPref) {
+        if (wasTurno) {
+          totalPrefTurno++;
+          if (naContr && !naContr.porEscolha) contrTurno++;
+        } else {
+          totalPrefFora++;
+          if (naContr && !naContr.porEscolha) contrFora++;
+        }
+      }
+    }
+  });
+
+  // pct benefícios: benefício / noites nessa parte (not vs each other)
+  var pctB = function pctB(ben, noitesParte) {
+    return noitesParte === 0 ? 0 : p2(ben / noitesParte * 100);
+  };
+  return {
+    turno: {
+      nPrimeiras: nPt,
+      nSegundas: nSt,
+      primBom: pBt,
+      primMau: pMt,
+      segBom: sBt,
+      segMau: sMt,
+      pctPrimBom: pctB(pBt, nPt),
+      pctPrimMau: pctB(pMt, nPt),
+      pctSegBom: pctB(sBt, nSt),
+      pctSegMau: pctB(sMt, nSt),
+      pctContraria: totalPrefTurno === 0 ? 0 : p2(contrTurno / totalPrefTurno * 100),
+      contrariaCount: contrTurno,
+      totalPref: totalPrefTurno
+    },
+    fora: {
+      nPrimeiras: nPf,
+      nSegundas: nSf,
+      primBom: pBf,
+      primMau: pMf,
+      segBom: sBf,
+      segMau: sMf,
+      pctPrimBom: pctB(pBf, nPf),
+      pctPrimMau: pctB(pMf, nPf),
+      pctSegBom: pctB(sBf, nSf),
+      pctSegMau: pctB(sMf, nSf),
+      pctContraria: totalPrefFora === 0 ? 0 : p2(contrFora / totalPrefFora * 100),
+      contrariaCount: contrFora,
+      totalPref: totalPrefFora
+    }
+  };
+}
+
+// ─── Alerta duas noites seguidas com benefício ────────────────────────────
+function alertasDuasNoites(pessoaId, noites) {
+  if (noites.length < 2) return false;
+  var sorted = _toConsumableArray(noites).sort(function (a, b) {
+    return new Date(a.data) - new Date(b.data);
+  });
+  for (var i = sorted.length - 1; i >= 1; i--) {
+    var temB = function temB(n) {
+      var _n$primeiras2, _n$segundas2;
+      var p = (_n$primeiras2 = n.primeiras) === null || _n$primeiras2 === void 0 ? void 0 : _n$primeiras2.find(function (a) {
+        return a.pessoaId === pessoaId;
+      });
+      var s = (_n$segundas2 = n.segundas) === null || _n$segundas2 === void 0 ? void 0 : _n$segundas2.find(function (a) {
+        return a.pessoaId === pessoaId;
+      });
+      return p && p.beneficio !== "nenhum" || s && s.beneficio !== "nenhum";
+    };
+    if (temB(sorted[i - 1]) && temB(sorted[i])) return true;
+  }
+  return false;
+}
+
+// ─── Export modal ─────────────────────────────────────────────────────────
+function ModalExport(_ref) {
+  var state = _ref.state,
+    onClose = _ref.onClose;
+  var json = JSON.stringify(state, null, 2);
+  var _useState = useState(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    copied = _useState2[0],
+    setCopied = _useState2[1];
+  var copy = function copy() {
+    navigator.clipboard.writeText(json).then(function () {
+      setCopied(true);
+      setTimeout(function () {
+        return setCopied(false);
+      }, 2000);
+    });
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed",
+      inset: 0,
+      background: "#000c",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 300
+    },
+    onClick: function onClick(e) {
+      return e.target === e.currentTarget && onClose();
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#12122a",
+      border: "1px solid #3d3d7a",
+      borderRadius: 14,
+      padding: 24,
+      width: "min(600px,96vw)",
+      maxHeight: "85vh",
+      display: "flex",
+      flexDirection: "column",
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 900,
+      fontSize: 15,
+      color: "#a78bfa",
+      letterSpacing: 2
+    }
+  }, "\u2B07 EXPORTAR DADOS"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: "#6b6b9a"
+    }
+  }, "Copia o texto abaixo e guarda num ficheiro ", /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: "#e2e2f0"
+    }
+  }, ".json"), " no teu dispositivo. Usa esse ficheiro para importar na app no futuro."), /*#__PURE__*/React.createElement("textarea", {
+    readOnly: true,
+    value: json,
+    style: {
+      flex: 1,
+      minHeight: 300,
+      background: "#0d0d1a",
+      border: "1px solid #3d3d7a",
+      borderRadius: 6,
+      padding: 10,
+      color: "#a8c8a8",
+      fontFamily: "monospace",
+      fontSize: 11,
+      resize: "none"
+    },
+    onClick: function onClick(e) {
+      return e.target.select();
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 10,
+      justifyContent: "flex-end"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onClose,
+    style: {
+      background: "#2a2a4a",
+      color: "#fff",
+      border: "none",
+      borderRadius: 6,
+      padding: "9px 18px",
+      cursor: "pointer",
+      fontFamily: "inherit",
+      fontWeight: 700,
+      fontSize: 12
+    }
+  }, "Fechar"), /*#__PURE__*/React.createElement("button", {
+    onClick: copy,
+    style: {
+      background: copied ? "#166534" : "#5b21b6",
+      color: "#fff",
+      border: "none",
+      borderRadius: 6,
+      padding: "9px 18px",
+      cursor: "pointer",
+      fontFamily: "inherit",
+      fontWeight: 700,
+      fontSize: 12
+    }
+  }, copied ? "✓ Copiado!" : "📋 Copiar tudo"))));
+}
+function parseNomesCSV(_x) {
+  return _parseNomesCSV.apply(this, arguments);
+} // ─── Styles ───────────────────────────────────────────────────────────────
+function _parseNomesCSV() {
+  _parseNomesCSV = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(file) {
+    return _regenerator().w(function (_context2) {
+      while (1) switch (_context2.n) {
+        case 0:
+          return _context2.a(2, new Promise(function (res, rej) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              var nomes = [];
+              e.target.result.split(/\r?\n/).forEach(function (line) {
+                line.split(",").forEach(function (n) {
+                  var t = n.trim();
+                  if (t && t.length > 1) nomes.push(t);
+                });
+              });
+              res(nomes);
+            };
+            reader.onerror = rej;
+            reader.readAsText(file);
+          }));
+      }
+    }, _callee2);
+  }));
+  return _parseNomesCSV.apply(this, arguments);
+}
+var INP = {
+  background: "#1a1a3e",
+  border: "1px solid #3d3d7a",
+  borderRadius: 6,
+  padding: "9px 13px",
+  color: "#e2e2f0",
+  fontFamily: "inherit",
+  fontSize: 13,
+  width: "100%",
+  boxSizing: "border-box"
+};
+var BTN = function BTN() {
+  var bg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "#5b21b6";
+  var extra = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return _objectSpread({
+    background: bg,
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    padding: "9px 18px",
+    cursor: "pointer",
+    fontFamily: "inherit",
+    fontWeight: 700,
+    fontSize: 12,
+    letterSpacing: 1
+  }, extra);
+};
+var LBL = {
+  fontSize: 11,
+  color: "#6b6b9a",
+  letterSpacing: 1,
+  display: "block",
+  marginBottom: 4
+};
+var CARD = {
+  background: "#1a1a3e",
+  border: "1px solid #3d3d7a",
+  borderRadius: 10,
+  padding: 16,
+  marginBottom: 12
+};
+var PREF_ICON = {
+  primeiras: "🌑",
+  segundas: "🌒",
+  indiferente: "↔"
+};
+var PREF_COR = {
+  primeiras: "#818cf8",
+  segundas: "#fb923c",
+  indiferente: "#6b7280"
+};
+var pi = function pi(p) {
+  return PREF_ICON[(p === null || p === void 0 ? void 0 : p.preferencia) || "indiferente"] || "↔";
+};
+var pc = function pc(p) {
+  return PREF_COR[(p === null || p === void 0 ? void 0 : p.preferencia) || "indiferente"] || "#6b7280";
+};
+
+// Benefício colours (for schedule view)
+var BEN_COR = {
+  primBom: "#e6b800",
+  primMau: "#e67300",
+  segBom: "#1a6fbf",
+  segMau: "#7b2fbf"
+};
+var MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+var DIAS_PT = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+var DIAS_PT_FULL = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
+
+// ─── Autocomplete ─────────────────────────────────────────────────────────
+function Autocomplete(_ref2) {
+  var value = _ref2.value,
+    _onChange = _ref2.onChange,
+    options = _ref2.options,
+    onSelect = _ref2.onSelect,
+    placeholder = _ref2.placeholder,
+    disabled = _ref2.disabled;
+  var _useState3 = useState(false),
+    _useState4 = _slicedToArray(_useState3, 2),
+    open = _useState4[0],
+    setOpen = _useState4[1];
+  var ref = useRef();
+  useEffect(function () {
+    var h = function h(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", h);
+    return function () {
+      return document.removeEventListener("mousedown", h);
+    };
+  }, []);
+  var filtered = value.length > 0 ? options.filter(function (s) {
+    return s.toLowerCase().includes(value.toLowerCase());
+  }) : options.slice(0, 8);
+  return /*#__PURE__*/React.createElement("div", {
+    ref: ref,
+    style: {
+      position: "relative",
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    value: value,
+    onChange: function onChange(e) {
+      _onChange(e.target.value);
+      setOpen(true);
+    },
+    onFocus: function onFocus() {
+      return setOpen(true);
+    },
+    placeholder: placeholder,
+    disabled: disabled,
+    style: _objectSpread(_objectSpread({}, INP), {}, {
+      opacity: disabled ? 0.5 : 1
+    })
+  }), open && filtered.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "absolute",
+      top: "100%",
+      left: 0,
+      right: 0,
+      background: "#1a1a3e",
+      border: "1px solid #5b21b6",
+      borderRadius: "0 0 8px 8px",
+      zIndex: 200,
+      maxHeight: 200,
+      overflowY: "auto",
+      boxShadow: "0 8px 24px #0008"
+    }
+  }, filtered.map(function (s) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: s,
+      onClick: function onClick() {
+        onSelect(s);
+        setOpen(false);
+        _onChange("");
+      },
+      style: {
+        padding: "9px 13px",
+        cursor: "pointer",
+        fontSize: 13,
+        borderBottom: "1px solid #2a2a4a"
+      },
+      onMouseEnter: function onMouseEnter(e) {
+        return e.currentTarget.style.background = "#2a2a5a";
+      },
+      onMouseLeave: function onMouseLeave(e) {
+        return e.currentTarget.style.background = "transparent";
+      }
+    }, s);
+  })));
+}
+
+// ─── Modal Perfil ─────────────────────────────────────────────────────────
+function ModalPerfil(_ref3) {
+  var pessoa = _ref3.pessoa,
+    noites = _ref3.noites,
+    turno = _ref3.turno,
+    onSave = _ref3.onSave,
+    onClose = _ref3.onClose;
+  var _useState5 = useState(pessoa.nome),
+    _useState6 = _slicedToArray(_useState5, 2),
+    nome = _useState6[0],
+    setNome = _useState6[1];
+  var _useState7 = useState(pessoa.preferencia || "indiferente"),
+    _useState8 = _slicedToArray(_useState7, 2),
+    pref = _useState8[0],
+    setPref = _useState8[1];
+  var h0 = pessoa.historico || {};
+  var hF0 = pessoa.historicoFora || {};
+  var _useState9 = useState({
+      nPrimeiras: h0.nPrimeiras || 0,
+      nSegundas: h0.nSegundas || 0,
+      primBom: h0.primBom || 0,
+      primMau: h0.primMau || 0,
+      segBom: h0.segBom || 0,
+      segMau: h0.segMau || 0
+    }),
+    _useState0 = _slicedToArray(_useState9, 2),
+    h = _useState0[0],
+    setH = _useState0[1];
+  var _useState1 = useState({
+      nPrimeiras: hF0.nPrimeiras || 0,
+      nSegundas: hF0.nSegundas || 0,
+      primBom: hF0.primBom || 0,
+      primMau: hF0.primMau || 0,
+      segBom: hF0.segBom || 0,
+      segMau: hF0.segMau || 0
+    }),
+    _useState10 = _slicedToArray(_useState1, 2),
+    hF = _useState10[0],
+    setHF = _useState10[1];
+  var sf = function sf(setFn) {
+    return function (k) {
+      return function (e) {
+        return setFn(function (p) {
+          return _objectSpread(_objectSpread({}, p), {}, _defineProperty({}, k, parseInt(e.target.value) || 0));
+        });
+      };
+    };
+  };
+  var stats = calcStats(_objectSpread(_objectSpread({}, pessoa), {}, {
+    preferencia: pref,
+    historico: h,
+    historicoFora: hF
+  }), noites, turno);
+  var st = stats.turno,
+    sf2 = stats.fora;
+  var HistBlock = function HistBlock(_ref4) {
+    var title = _ref4.title,
+      s = _ref4.s,
+      pref2 = _ref4.pref2;
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: "#0d1a0d",
+        border: "1px solid #2d5a2d",
+        borderRadius: 8,
+        padding: 12,
+        fontSize: 11
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: "#4ade80",
+        fontWeight: 700,
+        marginBottom: 6
+      }
+    }, title), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 3,
+        color: "#a8c8a8"
+      }
+    }, /*#__PURE__*/React.createElement("span", null, "Primeiras: ", /*#__PURE__*/React.createElement("strong", null, s.nPrimeiras)), /*#__PURE__*/React.createElement("span", null, "Segundas: ", /*#__PURE__*/React.createElement("strong", null, s.nSegundas)), /*#__PURE__*/React.createElement("span", null, "P.Bom: ", /*#__PURE__*/React.createElement("strong", null, s.primBom), " (", s.pctPrimBom, "%)"), /*#__PURE__*/React.createElement("span", null, "P.Mau: ", /*#__PURE__*/React.createElement("strong", null, s.primMau), " (", s.pctPrimMau, "%)"), /*#__PURE__*/React.createElement("span", null, "S.Bom: ", /*#__PURE__*/React.createElement("strong", null, s.segBom), " (", s.pctSegBom, "%)"), /*#__PURE__*/React.createElement("span", null, "S.Mau: ", /*#__PURE__*/React.createElement("strong", null, s.segMau), " (", s.pctSegMau, "%)"), pref2 !== "indiferente" && /*#__PURE__*/React.createElement("span", {
+      style: {
+        gridColumn: "1/-1",
+        color: "#ffaa44"
+      }
+    }, "Contr\xE1ria: ", /*#__PURE__*/React.createElement("strong", null, s.contrariaCount, "/", s.totalPref), " (", s.pctContraria, "%)")));
+  };
+  var HistForm = function HistForm(_ref5) {
+    var title = _ref5.title,
+      vals = _ref5.vals,
+      setFn = _ref5.setFn;
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: "#0d0d22",
+        border: "1px solid #2a2a4a",
+        borderRadius: 8,
+        padding: 14,
+        marginBottom: 12
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        color: "#a78bfa",
+        letterSpacing: 1,
+        marginBottom: 10,
+        fontWeight: 700
+      }
+    }, title), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 8
+      }
+    }, [["nPrimeiras", "Nº Primeiras"], ["nSegundas", "Nº Segundas"], ["primBom", "Prim. Bom"], ["primMau", "Prim. Mau"], ["segBom", "Seg. Bom"], ["segMau", "Seg. Mau"]].map(function (_ref6) {
+      var _ref7 = _slicedToArray(_ref6, 2),
+        k = _ref7[0],
+        l = _ref7[1];
+      return /*#__PURE__*/React.createElement("div", {
+        key: k
+      }, /*#__PURE__*/React.createElement("label", {
+        style: LBL
+      }, l), /*#__PURE__*/React.createElement("input", {
+        type: "number",
+        min: 0,
+        value: vals[k],
+        onChange: setFn(k),
+        style: INP
+      }));
+    })));
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed",
+      inset: 0,
+      background: "#000c",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 300
+    },
+    onClick: function onClick(e) {
+      return e.target === e.currentTarget && onClose();
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#12122a",
+      border: "1px solid #5b21b6",
+      borderRadius: 14,
+      padding: 28,
+      width: "min(560px,96vw)",
+      maxHeight: "92vh",
+      overflowY: "auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 900,
+      fontSize: 16,
+      color: "#a78bfa",
+      marginBottom: 20,
+      letterSpacing: 2
+    }
+  }, "\uD83D\uDC64 PERFIL \u2014 ", pessoa.nome), /*#__PURE__*/React.createElement("label", {
+    style: LBL
+  }, "NOME"), /*#__PURE__*/React.createElement("input", {
+    value: nome,
+    onChange: function onChange(e) {
+      return setNome(e.target.value);
+    },
+    style: _objectSpread(_objectSpread({}, INP), {}, {
+      marginBottom: 16
+    })
+  }), /*#__PURE__*/React.createElement("label", {
+    style: LBL
+  }, "PREFER\xCANCIA DE TURNO"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginBottom: 20
+    }
+  }, [["primeiras", "🌑 Primeiras"], ["segundas", "🌒 Segundas"], ["indiferente", "↔ Indiferente"]].map(function (_ref8) {
+    var _ref9 = _slicedToArray(_ref8, 2),
+      v = _ref9[0],
+      l = _ref9[1];
+    return /*#__PURE__*/React.createElement("button", {
+      key: v,
+      onClick: function onClick() {
+        return setPref(v);
+      },
+      style: _objectSpread(_objectSpread({}, BTN(pref === v ? "#5b21b6" : "#2a2a4a")), {}, {
+        flex: 1,
+        border: "1px solid ".concat(pref === v ? "#a78bfa" : "#3d3d7a")
+      })
+    }, l);
+  })), /*#__PURE__*/React.createElement(HistForm, {
+    title: "\uD83D\uDCCB HIST\xD3RICO MANUAL \u2014 COMO MEMBRO DO TURNO",
+    vals: h,
+    setFn: sf(setH)
+  }), /*#__PURE__*/React.createElement(HistForm, {
+    title: "\uD83D\uDCCB HIST\xD3RICO MANUAL \u2014 FORA DO TURNO",
+    vals: hF,
+    setFn: sf(setHF)
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 10,
+      marginBottom: 20
+    }
+  }, /*#__PURE__*/React.createElement(HistBlock, {
+    title: "\uD83D\uDCCA TURNO",
+    s: st,
+    pref2: pref
+  }), /*#__PURE__*/React.createElement(HistBlock, {
+    title: "\uD83D\uDCCA FORA DO TURNO",
+    s: sf2,
+    pref2: pref
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 10,
+      justifyContent: "flex-end"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onClose,
+    style: BTN("#2a2a4a")
+  }, "Cancelar"), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return onSave({
+        nome: nome,
+        preferencia: pref,
+        historico: h,
+        historicoFora: hF
+      });
+    },
+    style: BTN()
+  }, "Guardar"))));
+}
+
+// ─── Modal Nova Noite ─────────────────────────────────────────────────────
+function ModalNoite(_ref0) {
+  var state = _ref0.state,
+    onClose = _ref0.onClose,
+    onGravar = _ref0.onGravar;
+  var _useState11 = useState(new Date().toISOString().slice(0, 10)),
+    _useState12 = _slicedToArray(_useState11, 2),
+    data = _useState12[0],
+    setData = _useState12[1];
+  var _useState13 = useState([]),
+    _useState14 = _slicedToArray(_useState13, 2),
+    pool = _useState14[0],
+    setPool = _useState14[1];
+  var _useState15 = useState(""),
+    _useState16 = _slicedToArray(_useState15, 2),
+    search = _useState16[0],
+    setSearch = _useState16[1];
+  var _useState17 = useState(1),
+    _useState18 = _slicedToArray(_useState17, 2),
+    step = _useState18[0],
+    setStep = _useState18[1];
+  var _useState19 = useState([]),
+    _useState20 = _slicedToArray(_useState19, 2),
+    primeiras = _useState20[0],
+    setPrimeiras = _useState20[1];
+  var _useState21 = useState([]),
+    _useState22 = _slicedToArray(_useState21, 2),
+    segundas = _useState22[0],
+    setSegundas = _useState22[1];
+  var _useState23 = useState({
+      bomList: [],
+      mauList: []
+    }),
+    _useState24 = _slicedToArray(_useState23, 2),
+    sugP = _useState24[0],
+    setSugP = _useState24[1];
+  var _useState25 = useState({
+      bomList: [],
+      mauList: []
+    }),
+    _useState26 = _slicedToArray(_useState25, 2),
+    sugS = _useState26[0],
+    setSugS = _useState26[1];
+  var pById = function pById(id) {
+    return state.pessoas.find(function (p) {
+      return p.id === id;
+    });
+  };
+  var getStatsFor = function getStatsFor(p) {
+    var _p$historicoFora, _p$historicoFora2;
+    var s = calcStats(p, state.noites, state.turno);
+    var useFora = !state.turno.includes(p.id) && (((_p$historicoFora = p.historicoFora) === null || _p$historicoFora === void 0 ? void 0 : _p$historicoFora.nPrimeiras) || 0) + (((_p$historicoFora2 = p.historicoFora) === null || _p$historicoFora2 === void 0 ? void 0 : _p$historicoFora2.nSegundas) || 0) > 0;
+    return useFora ? s.fora : s.turno;
+  };
+  var computeSug = function computeSug(pessoas, fieldBom, fieldMau) {
+    if (!pessoas.length) return {
+      bomList: [],
+      mauList: []
+    };
+    var doT = pessoas.filter(function (p) {
+      return state.turno.includes(p.id);
+    });
+    var foraT = pessoas.filter(function (p) {
+      return !state.turno.includes(p.id);
+    });
+    console.log("computeSug — turno ids:", state.turno);
+    console.log("computeSug — pessoas ids:", pessoas.map(function (p) {
+      return p.id + ":" + p.nome;
+    }));
+    console.log("computeSug — doT:", doT.map(function (p) {
+      return p.nome;
+    }));
+    console.log("computeSug — foraT:", foraT.map(function (p) {
+      return p.nome;
+    }));
+    var candidates = doT.length > 0 ? doT : foraT;
+    // Full ordered list: turno first (for display), fora after (marked F)
+    var allOrdered = [].concat(_toConsumableArray(doT), _toConsumableArray(foraT));
+    var bomList = _toConsumableArray(candidates).sort(function (a, b) {
+      return getStatsFor(a)[fieldBom] - getStatsFor(b)[fieldBom];
+    }).map(function (p) {
+      return {
+        nome: p.nome,
+        val: getStatsFor(p)[fieldBom],
+        isTurno: true
+      };
+    });
+    var mauList = _toConsumableArray(candidates).sort(function (a, b) {
+      return getStatsFor(a)[fieldMau] - getStatsFor(b)[fieldMau];
+    }).map(function (p) {
+      return {
+        nome: p.nome,
+        val: getStatsFor(p)[fieldMau],
+        isTurno: true
+      };
+    });
+    // Append fora do turno at the end (greyed out, not primary suggestions)
+    if (doT.length > 0) {
+      var foraB = _toConsumableArray(foraT).sort(function (a, b) {
+        return getStatsFor(a)[fieldBom] - getStatsFor(b)[fieldBom];
+      }).map(function (p) {
+        return {
+          nome: p.nome,
+          val: getStatsFor(p)[fieldBom],
+          isTurno: false
+        };
+      });
+      var foraM = _toConsumableArray(foraT).sort(function (a, b) {
+        return getStatsFor(a)[fieldMau] - getStatsFor(b)[fieldMau];
+      }).map(function (p) {
+        return {
+          nome: p.nome,
+          val: getStatsFor(p)[fieldMau],
+          isTurno: false
+        };
+      });
+      bomList.push.apply(bomList, _toConsumableArray(foraB));
+      mauList.push.apply(mauList, _toConsumableArray(foraM));
+    }
+    return {
+      bomList: bomList,
+      mauList: mauList
+    };
+  };
+  var availSearch = state.pessoas.filter(function (p) {
+    return !pool.includes(p.id);
+  }).sort(function (a, b) {
+    var ta = state.turno.includes(a.id) ? 0 : 1,
+      tb = state.turno.includes(b.id) ? 0 : 1;
+    return ta - tb || a.nome.localeCompare(b.nome);
+  });
+  var addToPool = function addToPool(nome) {
+    if (pool.length >= 8) return;
+    var clean = nome.replace(/^★ /, "");
+    var p = state.pessoas.find(function (pp) {
+      return pp.nome === clean;
+    });
+    if (p && !pool.includes(p.id)) setPool(function (prev) {
+      return [].concat(_toConsumableArray(prev), [p.id]);
+    });
+    setSearch("");
+  };
+  var avancar = function avancar() {
+    var pessoasPool = pool.map(function (id) {
+      return pById(id);
+    }).filter(Boolean);
+    var getPct = function getPct(p) {
+      return getStatsFor(p).pctContraria;
+    };
+    var doTurno = pessoasPool.filter(function (p) {
+      return state.turno.includes(p.id);
+    });
+    var foraTurno = pessoasPool.filter(function (p) {
+      return !state.turno.includes(p.id);
+    });
+    var primIds = [],
+      segIds = [];
+
+    // ── Distribute TURNO members first ──────────────────────────────────
+    var tPrefP = doTurno.filter(function (p) {
+      return p.preferencia === "primeiras";
+    });
+    var tPrefS = doTurno.filter(function (p) {
+      return p.preferencia === "segundas";
+    });
+    var tInd = doTurno.filter(function (p) {
+      return !p.preferencia || p.preferencia === "indiferente";
+    });
+
+    // prefP turno → primeiras; overflow → segundas (sorted by pctContraria DESC)
+    if (tPrefP.length <= 4) {
+      tPrefP.forEach(function (p) {
+        return primIds.push(p.id);
+      });
+    } else {
+      _toConsumableArray(tPrefP).sort(function (a, b) {
+        return getPct(b) - getPct(a);
+      }).forEach(function (p, i) {
+        if (i < 4) primIds.push(p.id);else segIds.push(p.id);
+      });
+    }
+
+    // prefS turno → segundas; overflow → primeiras
+    var slotsS1 = 4 - segIds.length;
+    if (tPrefS.length <= slotsS1) {
+      tPrefS.forEach(function (p) {
+        return segIds.push(p.id);
+      });
+    } else {
+      _toConsumableArray(tPrefS).sort(function (a, b) {
+        return getPct(b) - getPct(a);
+      }).forEach(function (p, i) {
+        if (i < slotsS1) segIds.push(p.id);else primIds.push(p.id);
+      });
+    }
+
+    // indiferentes turno → balance by nPrimeiras
+    _toConsumableArray(tInd).sort(function (a, b) {
+      return getStatsFor(a).nPrimeiras - getStatsFor(b).nPrimeiras;
+    }).forEach(function (p) {
+      if (primIds.length < 4) primIds.push(p.id);else if (segIds.length < 4) segIds.push(p.id);
+    });
+
+    // ── Fill remaining slots with FORA DO TURNO ──────────────────────────
+    // Fora do turno goes to whichever slots remain — no preference priority
+    // Sort: those who have been sent to contrária least (pctContraria ASC) go first
+    // but they fill whatever slots are open regardless of preference
+    var remP = 4 - primIds.length;
+    var remS = 4 - segIds.length;
+    var fPrefP = foraTurno.filter(function (p) {
+      return p.preferencia === "primeiras";
+    });
+    var fPrefS = foraTurno.filter(function (p) {
+      return p.preferencia === "segundas";
+    });
+    var fInd = foraTurno.filter(function (p) {
+      return !p.preferencia || p.preferencia === "indiferente";
+    });
+
+    // Assign fora do turno to remaining slots — preferred side first if slots available,
+    // otherwise to whatever is open
+    _toConsumableArray(fPrefP).sort(function (a, b) {
+      return getPct(b) - getPct(a);
+    }).forEach(function (p) {
+      if (primIds.length < 4) primIds.push(p.id);else if (segIds.length < 4) segIds.push(p.id);
+    });
+    _toConsumableArray(fPrefS).sort(function (a, b) {
+      return getPct(b) - getPct(a);
+    }).forEach(function (p) {
+      if (segIds.length < 4) segIds.push(p.id);else if (primIds.length < 4) primIds.push(p.id);
+    });
+    _toConsumableArray(fInd).sort(function (a, b) {
+      return getStatsFor(a).nPrimeiras - getStatsFor(b).nPrimeiras;
+    }).forEach(function (p) {
+      if (primIds.length < 4) primIds.push(p.id);else if (segIds.length < 4) segIds.push(p.id);
+    });
+    var toA = function toA(ids) {
+      return ids.map(function (id) {
+        return {
+          pessoaId: id,
+          beneficio: "nenhum",
+          porEscolha: false,
+          eraTurno: state.turno.includes(id)
+        };
+      });
+    };
+    setPrimeiras(toA(primIds));
+    setSegundas(toA(segIds));
+    var pP = primIds.map(function (id) {
+      return pessoasPool.find(function (p) {
+        return p.id === id;
+      });
+    }).filter(Boolean);
+    var sP = segIds.map(function (id) {
+      return pessoasPool.find(function (p) {
+        return p.id === id;
+      });
+    }).filter(Boolean);
+    setSugP(computeSug(pP, "pctPrimBom", "pctPrimMau"));
+    setSugS(computeSug(sP, "pctSegBom", "pctSegMau"));
+    setStep(2);
+  };
+  var temBeneficio = function temBeneficio(pid) {
+    var ip = primeiras.find(function (a) {
+      return a.pessoaId === pid;
+    });
+    var is = segundas.find(function (a) {
+      return a.pessoaId === pid;
+    });
+    return ip && ip.beneficio !== "nenhum" || is && is.beneficio !== "nenhum";
+  };
+  var moverParte = function moverParte(pid, de) {
+    if (de === "primeiras") {
+      var a = primeiras.find(function (x) {
+        return x.pessoaId === pid;
+      });
+      setPrimeiras(function (prev) {
+        return prev.filter(function (x) {
+          return x.pessoaId !== pid;
+        });
+      });
+      setSegundas(function (prev) {
+        return [].concat(_toConsumableArray(prev), [_objectSpread(_objectSpread({}, a), {}, {
+          beneficio: "nenhum",
+          porEscolha: false
+        })]);
+      });
+    } else {
+      var _a = segundas.find(function (x) {
+        return x.pessoaId === pid;
+      });
+      setSegundas(function (prev) {
+        return prev.filter(function (x) {
+          return x.pessoaId !== pid;
+        });
+      });
+      setPrimeiras(function (prev) {
+        return [].concat(_toConsumableArray(prev), [_objectSpread(_objectSpread({}, _a), {}, {
+          beneficio: "nenhum",
+          porEscolha: false
+        })]);
+      });
+    }
+  };
+  var setBen = function setBen(pid, b, setL) {
+    return setL(function (prev) {
+      return prev.map(function (a) {
+        return a.pessoaId === pid ? _objectSpread(_objectSpread({}, a), {}, {
+          beneficio: b
+        }) : a;
+      });
+    });
+  };
+  var setEC = function setEC(pid, v, setL) {
+    return setL(function (prev) {
+      return prev.map(function (a) {
+        return a.pessoaId === pid ? _objectSpread(_objectSpread({}, a), {}, {
+          porEscolha: v
+        }) : a;
+      });
+    });
+  };
+  var canGravar = primeiras.length === 4 && segundas.length === 4;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: "fixed",
+      inset: 0,
+      background: "#000d",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 100
+    },
+    onClick: function onClick(e) {
+      return e.target === e.currentTarget && onClose();
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#0f0f24",
+      border: "1px solid #3d3d7a",
+      borderRadius: 16,
+      padding: 28,
+      width: "min(720px,98vw)",
+      maxHeight: "95vh",
+      overflowY: "auto"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 900,
+      fontSize: 17,
+      color: "#a78bfa",
+      marginBottom: 4,
+      letterSpacing: 2
+    }
+  }, "\uD83C\uDF19 REGISTAR NOITE"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "#6b6b9a",
+      marginBottom: 16
+    }
+  }, step === 1 ? "PASSO 1 — Adicionar quem faz a noite" : "PASSO 2 — Distribuir e atribuir benefícios"), /*#__PURE__*/React.createElement("label", {
+    style: LBL
+  }, "DATA"), /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    value: data,
+    onChange: function onChange(e) {
+      return setData(e.target.value);
+    },
+    style: _objectSpread(_objectSpread({}, INP), {}, {
+      marginBottom: 18,
+      maxWidth: 200
+    })
+  }), step === 1 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement(Autocomplete, {
+    value: search,
+    onChange: setSearch,
+    options: availSearch.map(function (p) {
+      return (state.turno.includes(p.id) ? "★ " : "") + p.nome;
+    }),
+    onSelect: addToPool,
+    placeholder: pool.length >= 8 ? "Máximo 8 pessoas" : "Pesquisar e adicionar pessoa...",
+    disabled: pool.length >= 8
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: LBL
+  }, "PESSOAS DESTA NOITE"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      fontWeight: 700,
+      color: pool.length === 8 ? "#4ade80" : "#f59e0b"
+    }
+  }, pool.length, "/8")), pool.length === 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "#4b5563",
+      fontSize: 13,
+      textAlign: "center",
+      padding: "24px 0",
+      border: "1px dashed #2a2a4a",
+      borderRadius: 8,
+      marginBottom: 16
+    }
+  }, "Ainda n\xE3o foram adicionadas pessoas"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 6,
+      marginBottom: 20
+    }
+  }, pool.map(function (id) {
+    var p = pById(id);
+    if (!p) return null;
+    var isTurno = state.turno.includes(p.id);
+    return /*#__PURE__*/React.createElement("div", {
+      key: id,
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        background: "#141428",
+        border: "1px solid ".concat(isTurno ? "#4a3a7a" : "#2a2a4a"),
+        borderRadius: 8,
+        padding: "9px 13px"
+      }
+    }, isTurno && /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 9,
+        background: "#3d2d7a",
+        color: "#c4b5fd",
+        borderRadius: 3,
+        padding: "1px 5px",
+        fontWeight: 700
+      }
+    }, "TURNO"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: pc(p),
+        fontSize: 13
+      }
+    }, pi(p)), /*#__PURE__*/React.createElement("span", {
+      style: {
+        flex: 1,
+        fontSize: 13,
+        fontWeight: 600
+      }
+    }, p.nome), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setPool(function (prev) {
+          return prev.filter(function (pid) {
+            return pid !== id;
+          });
+        });
+      },
+      style: {
+        background: "transparent",
+        color: "#f87171",
+        border: "none",
+        cursor: "pointer",
+        fontSize: 18,
+        lineHeight: 1
+      }
+    }, "\xD7"));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 10,
+      justifyContent: "flex-end"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onClose,
+    style: BTN("#2a2a4a")
+  }, "Cancelar"), /*#__PURE__*/React.createElement("button", {
+    onClick: avancar,
+    disabled: pool.length !== 8,
+    style: _objectSpread(_objectSpread({}, BTN()), {}, {
+      opacity: pool.length === 8 ? 1 : 0.4,
+      cursor: pool.length === 8 ? "pointer" : "not-allowed"
+    })
+  }, "Continuar \u2192"))), step === 2 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 14,
+      marginBottom: 14
+    }
+  }, [{
+    label: "🌑 PRIMEIRAS",
+    lista: primeiras,
+    setL: setPrimeiras,
+    sug: sugP,
+    parteStr: "primeiras"
+  }, {
+    label: "🌒 SEGUNDAS",
+    lista: segundas,
+    setL: setSegundas,
+    sug: sugS,
+    parteStr: "segundas"
+  }].map(function (_ref1) {
+    var label = _ref1.label,
+      lista = _ref1.lista,
+      setL = _ref1.setL,
+      sug = _ref1.sug,
+      parteStr = _ref1.parteStr;
+    return /*#__PURE__*/React.createElement("div", {
+      key: label,
+      style: {
+        background: "#12122a",
+        borderRadius: 10,
+        padding: 14,
+        border: "1px solid #2a2a4a"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 10
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 900,
+        fontSize: 13,
+        color: "#a78bfa",
+        letterSpacing: 1
+      }
+    }, label), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 12,
+        fontWeight: 700,
+        color: lista.length === 4 ? "#4ade80" : "#f59e0b"
+      }
+    }, lista.length, "/4")), (sug.bomList.length > 0 || sug.mauList.length > 0) && /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: "#0d1a0d",
+        border: "1px solid #1d4a1d",
+        borderRadius: 6,
+        padding: "8px 10px",
+        marginBottom: 10,
+        fontSize: 11
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: "#4ade80",
+        fontWeight: 700,
+        marginBottom: 4
+      }
+    }, "\uD83D\uDCA1 Ordem sugerida:"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 6
+      }
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: "#4ade80",
+        marginBottom: 3,
+        fontWeight: 700
+      }
+    }, "Bom"), sug.bomList.map(function (item, i) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: item.nome,
+        style: {
+          color: i === 0 ? "#4ade80" : item.isTurno ? "#3a6a3a" : "#5a5a3a",
+          marginBottom: 1,
+          display: "flex",
+          gap: 4,
+          alignItems: "center"
+        }
+      }, /*#__PURE__*/React.createElement("span", null, i + 1, ". ", item.nome), !item.isTurno && /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 9,
+          color: "#888",
+          background: "#2a2a2a",
+          borderRadius: 2,
+          padding: "0 3px"
+        }
+      }, "F"), /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: "#2a4a2a"
+        }
+      }, "(", item.val, "%)"));
+    })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: "#f87171",
+        marginBottom: 3,
+        fontWeight: 700
+      }
+    }, "Mau"), sug.mauList.map(function (item, i) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: item.nome,
+        style: {
+          color: i === 0 ? "#f87171" : item.isTurno ? "#6a3a3a" : "#5a5a3a",
+          marginBottom: 1,
+          display: "flex",
+          gap: 4,
+          alignItems: "center"
+        }
+      }, /*#__PURE__*/React.createElement("span", null, i + 1, ". ", item.nome), !item.isTurno && /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 9,
+          color: "#888",
+          background: "#2a2a2a",
+          borderRadius: 2,
+          padding: "0 3px"
+        }
+      }, "F"), /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: "#4a2a2a"
+        }
+      }, "(", item.val, "%)"));
+    })))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 5
+      }
+    }, lista.map(function (atrib) {
+      var p = pById(atrib.pessoaId);
+      if (!p) return null;
+      var isTurno = state.turno.includes(p.id);
+      var contr = p.preferencia !== "indiferente" && p.preferencia !== parteStr;
+      var outra = parteStr === "primeiras" ? segundas : primeiras;
+      var jaTemNoutra = outra.find(function (a) {
+        return a.pessoaId === p.id && a.beneficio !== "nenhum";
+      });
+      return /*#__PURE__*/React.createElement("div", {
+        key: atrib.pessoaId,
+        style: {
+          background: contr ? "#1a1200" : "#0d0d20",
+          border: "1px solid ".concat(isTurno ? "#4a3a7a" : "#2a2a4a"),
+          borderRadius: 7,
+          padding: "7px 10px"
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+          marginBottom: 5
+        }
+      }, isTurno && /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 9,
+          background: "#3d2d7a",
+          color: "#c4b5fd",
+          borderRadius: 3,
+          padding: "1px 4px",
+          fontWeight: 700
+        }
+      }, "T"), /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: pc(p),
+          fontSize: 12
+        }
+      }, pi(p)), /*#__PURE__*/React.createElement("span", {
+        style: {
+          flex: 1,
+          fontSize: 12,
+          fontWeight: 600
+        }
+      }, p.nome), contr && /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 9,
+          color: "#f59e0b",
+          fontWeight: 700
+        }
+      }, "\u2260pref"), /*#__PURE__*/React.createElement("button", {
+        onClick: function onClick() {
+          return moverParte(atrib.pessoaId, parteStr);
+        },
+        style: {
+          background: "#2a2a4a",
+          color: "#a78bfa",
+          border: "none",
+          borderRadius: 4,
+          padding: "2px 7px",
+          cursor: "pointer",
+          fontSize: 11,
+          fontFamily: "inherit"
+        }
+      }, parteStr === "primeiras" ? "→ Seg" : "← Prim")), /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          gap: 4,
+          alignItems: "center",
+          flexWrap: "wrap"
+        }
+      }, ["nenhum", "bom", "mau"].map(function (b) {
+        var isActive = atrib.beneficio === b;
+        var disabled = !!jaTemNoutra && b !== "nenhum" && !isActive;
+        return /*#__PURE__*/React.createElement("button", {
+          key: b,
+          onClick: function onClick() {
+            return !disabled && setBen(atrib.pessoaId, b, setL);
+          },
+          disabled: disabled,
+          style: {
+            background: isActive ? b === "bom" ? "#166534" : b === "mau" ? "#991b1b" : "#374151" : "#0d0d1a",
+            color: b === "bom" ? "#4ade80" : b === "mau" ? "#f87171" : "#9ca3af",
+            border: "1px solid ".concat(b === "bom" ? "#16a34a" : b === "mau" ? "#dc2626" : "#374151"),
+            borderRadius: 4,
+            padding: "2px 8px",
+            cursor: disabled ? "not-allowed" : "pointer",
+            fontFamily: "inherit",
+            fontSize: 10,
+            fontWeight: 700,
+            opacity: disabled ? 0.35 : 1
+          }
+        }, b === "nenhum" ? "—" : b.toUpperCase());
+      }), contr && /*#__PURE__*/React.createElement("label", {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: 3,
+          fontSize: 10,
+          color: "#facc15",
+          cursor: "pointer",
+          background: "#2a2000",
+          border: "1px solid #f59e0b44",
+          borderRadius: 4,
+          padding: "2px 6px"
+        }
+      }, /*#__PURE__*/React.createElement("input", {
+        type: "checkbox",
+        checked: atrib.porEscolha || false,
+        onChange: function onChange(e) {
+          return setEC(atrib.pessoaId, e.target.checked, setL);
+        },
+        style: {
+          accentColor: "#facc15"
+        }
+      }), "Escolha")));
+    })));
+  })), !canGravar && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#2a1a00",
+      border: "1px solid #f59e0b44",
+      borderRadius: 6,
+      padding: "8px 12px",
+      fontSize: 12,
+      color: "#f59e0b",
+      marginBottom: 14
+    }
+  }, "\u26A0\uFE0F Primeiras: ", primeiras.length, "/4 \xB7 Segundas: ", segundas.length, "/4"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 10,
+      justifyContent: "flex-end"
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return setStep(1);
+    },
+    style: BTN("#2a2a4a")
+  }, "\u2190 Voltar"), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return canGravar && onGravar({
+        data: data,
+        primeiras: primeiras,
+        segundas: segundas
+      });
+    },
+    disabled: !canGravar,
+    style: _objectSpread(_objectSpread({}, BTN()), {}, {
+      opacity: canGravar ? 1 : 0.4,
+      cursor: canGravar ? "pointer" : "not-allowed"
+    })
+  }, "Gravar Noite")))));
+}
+
+// ─── Tab Histórico — calendar view ───────────────────────────────────────
+function TabHistorico(_ref10) {
+  var state = _ref10.state;
+  var hoje = new Date();
+  var _useState27 = useState(hoje.getFullYear()),
+    _useState28 = _slicedToArray(_useState27, 2),
+    ano = _useState28[0],
+    setAno = _useState28[1];
+  var _useState29 = useState(hoje.getMonth()),
+    _useState30 = _slicedToArray(_useState29, 2),
+    mes = _useState30[0],
+    setMes = _useState30[1]; // 0-based
+  var pById = function pById(id) {
+    return state.pessoas.find(function (p) {
+      return p.id === id;
+    });
+  };
+
+  // Filter noites for selected month
+  var noitesMes = state.noites.filter(function (n) {
+    var d = new Date(n.data + "T00:00:00");
+    return d.getFullYear() === ano && d.getMonth() === mes;
+  }).sort(function (a, b) {
+    return new Date(a.data) - new Date(b.data);
+  });
+  var anos = Array.from({
+    length: 10
+  }, function (_, i) {
+    return hoje.getFullYear() - 5 + i;
+  });
+
+  // Order people for display:
+  // Primeiras: Bom, Mau, outros dois
+  // Segundas: sem benefício (2), Mau, Bom
+  function ordenarPrimeiras(lista) {
+    var bom = lista.filter(function (a) {
+      return a.beneficio === "bom";
+    });
+    var mau = lista.filter(function (a) {
+      return a.beneficio === "mau";
+    });
+    var outros = lista.filter(function (a) {
+      return a.beneficio === "nenhum";
+    });
+    return [].concat(_toConsumableArray(bom), _toConsumableArray(mau), _toConsumableArray(outros));
+  }
+  function ordenarSegundas(lista) {
+    var bom = lista.filter(function (a) {
+      return a.beneficio === "bom";
+    });
+    var mau = lista.filter(function (a) {
+      return a.beneficio === "mau";
+    });
+    var outros = lista.filter(function (a) {
+      return a.beneficio === "nenhum";
+    });
+    return [].concat(_toConsumableArray(outros), _toConsumableArray(mau), _toConsumableArray(bom));
+  }
+
+  // Benefício highlight colours
+  function corCelula(atrib, parte) {
+    if (atrib.beneficio === "nenhum") return {
+      bg: "transparent",
+      color: "#e2e2f0",
+      border: "transparent"
+    };
+    if (parte === "primeiras" && atrib.beneficio === "bom") return {
+      bg: "#e6b80022",
+      color: "#e6b800",
+      border: "#e6b800"
+    };
+    if (parte === "primeiras" && atrib.beneficio === "mau") return {
+      bg: "#e6730022",
+      color: "#e67300",
+      border: "#e67300"
+    };
+    if (parte === "segundas" && atrib.beneficio === "bom") return {
+      bg: "#1a6fbf22",
+      color: "#4aaeff",
+      border: "#1a6fbf"
+    };
+    if (parte === "segundas" && atrib.beneficio === "mau") return {
+      bg: "#7b2fbf22",
+      color: "#c084fc",
+      border: "#7b2fbf"
+    };
+    return {
+      bg: "transparent",
+      color: "#e2e2f0",
+      border: "transparent"
+    };
+  }
+  if (noitesMes.length === 0) {
+    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Selectors, {
+      ano: ano,
+      setAno: setAno,
+      mes: mes,
+      setMes: setMes,
+      anos: anos
+    }), /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: "#6b6b9a",
+        fontSize: 13,
+        marginTop: 20
+      }
+    }, "Nenhuma noite registada em ", MESES[mes], " ", ano, "."));
+  }
+
+  // Render a table like the photo
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Selectors, {
+    ano: ano,
+    setAno: setAno,
+    mes: mes,
+    setMes: setMes,
+    anos: anos
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 12,
+      flexWrap: "wrap",
+      marginBottom: 16,
+      fontSize: 11
+    }
+  }, [["Prim. Bom", BEN_COR.primBom], ["Prim. Mau", BEN_COR.primMau], ["Seg. Bom", BEN_COR.segBom], ["Seg. Mau", BEN_COR.segMau]].map(function (_ref11) {
+    var _ref12 = _slicedToArray(_ref11, 2),
+      l = _ref12[0],
+      c = _ref12[1];
+    return /*#__PURE__*/React.createElement("span", {
+      key: l,
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 4
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        width: 12,
+        height: 12,
+        background: c,
+        borderRadius: 2,
+        display: "inline-block"
+      }
+    }), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: "#9ca3af"
+      }
+    }, l));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      overflowX: "auto"
+    }
+  }, /*#__PURE__*/React.createElement("table", {
+    style: {
+      borderCollapse: "collapse",
+      fontSize: 12,
+      minWidth: "100%"
+    }
+  }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
+    style: {
+      background: "#e6b800"
+    }
+  }, /*#__PURE__*/React.createElement("th", {
+    style: {
+      padding: "10px 14px",
+      textAlign: "left",
+      color: "#1a1000",
+      fontWeight: 900,
+      letterSpacing: 1,
+      whiteSpace: "nowrap",
+      minWidth: 80
+    }
+  }, "NOITES TURNO C \u2014 ", MESES[mes].toUpperCase(), "/", ano), noitesMes.map(function (n) {
+    var d = new Date(n.data + "T00:00:00");
+    var diaSemana = DIAS_PT_FULL[d.getDay()].toUpperCase();
+    var dia = d.getDate();
+    return /*#__PURE__*/React.createElement("th", {
+      key: n.id,
+      style: {
+        padding: "8px 12px",
+        textAlign: "center",
+        color: "#1a1000",
+        fontWeight: 900,
+        background: "#e6b800",
+        minWidth: 110,
+        borderLeft: "2px solid #fff"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        letterSpacing: 1
+      }
+    }, diaSemana), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 14
+      }
+    }, dia));
+  }))), /*#__PURE__*/React.createElement("tbody", null, [0, 1, 2, 3].map(function (idx) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: "p".concat(idx),
+      style: {
+        background: idx % 2 === 0 ? "#1a1a3e" : "#141428"
+      }
+    }, idx === 0 && /*#__PURE__*/React.createElement("td", {
+      rowSpan: 4,
+      style: {
+        padding: "10px 14px",
+        fontWeight: 900,
+        fontSize: 20,
+        color: "#e6b800",
+        textAlign: "center",
+        background: "#1a1a3e",
+        borderRight: "2px solid #e6b80033",
+        verticalAlign: "middle",
+        letterSpacing: 2
+      }
+    }, "I"), noitesMes.map(function (n) {
+      var ordered = ordenarPrimeiras(n.primeiras || []);
+      var atrib = ordered[idx];
+      if (!atrib) return /*#__PURE__*/React.createElement("td", {
+        key: n.id,
+        style: {
+          padding: "8px 12px",
+          borderLeft: "1px solid #2a2a4a",
+          minWidth: 110
+        }
+      });
+      var p = pById(atrib.pessoaId);
+      var cor = corCelula(atrib, "primeiras");
+      return /*#__PURE__*/React.createElement("td", {
+        key: n.id,
+        style: {
+          padding: "7px 12px",
+          borderLeft: "1px solid #2a2a4a",
+          background: cor.bg,
+          minWidth: 110
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: cor.color,
+          fontWeight: atrib.beneficio !== "nenhum" ? 700 : 400,
+          fontSize: 12
+        }
+      }, (p === null || p === void 0 ? void 0 : p.nome) || "—"));
+    }));
+  }), /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
+    colSpan: noitesMes.length + 1,
+    style: {
+      height: 4,
+      background: "#e6b80033"
+    }
+  })), [0, 1, 2, 3].map(function (idx) {
+    return /*#__PURE__*/React.createElement("tr", {
+      key: "s".concat(idx),
+      style: {
+        background: idx % 2 === 0 ? "#1a1a3e" : "#141428"
+      }
+    }, idx === 0 && /*#__PURE__*/React.createElement("td", {
+      rowSpan: 4,
+      style: {
+        padding: "10px 14px",
+        fontWeight: 900,
+        fontSize: 20,
+        color: "#4aaeff",
+        textAlign: "center",
+        background: "#1a1a3e",
+        borderRight: "2px solid #4aaeff33",
+        verticalAlign: "middle",
+        letterSpacing: 2
+      }
+    }, "II"), noitesMes.map(function (n) {
+      var ordered = ordenarSegundas(n.segundas || []);
+      var atrib = ordered[idx];
+      if (!atrib) return /*#__PURE__*/React.createElement("td", {
+        key: n.id,
+        style: {
+          padding: "8px 12px",
+          borderLeft: "1px solid #2a2a4a",
+          minWidth: 110
+        }
+      });
+      var p = pById(atrib.pessoaId);
+      var cor = corCelula(atrib, "segundas");
+      return /*#__PURE__*/React.createElement("td", {
+        key: n.id,
+        style: {
+          padding: "7px 12px",
+          borderLeft: "1px solid #2a2a4a",
+          background: cor.bg,
+          minWidth: 110
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: cor.color,
+          fontWeight: atrib.beneficio !== "nenhum" ? 700 : 400,
+          fontSize: 12
+        }
+      }, (p === null || p === void 0 ? void 0 : p.nome) || "—"));
+    }));
+  })))));
+}
+function Selectors(_ref13) {
+  var ano = _ref13.ano,
+    setAno = _ref13.setAno,
+    mes = _ref13.mes,
+    setMes = _ref13.setMes,
+    anos = _ref13.anos;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 12,
+      marginBottom: 20,
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    style: LBL
+  }, "ANO"), /*#__PURE__*/React.createElement("select", {
+    value: ano,
+    onChange: function onChange(e) {
+      return setAno(parseInt(e.target.value));
+    },
+    style: _objectSpread(_objectSpread({}, INP), {}, {
+      width: "auto"
+    })
+  }, anos.map(function (a) {
+    return /*#__PURE__*/React.createElement("option", {
+      key: a,
+      value: a
+    }, a);
+  }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    style: LBL
+  }, "M\xCAS"), /*#__PURE__*/React.createElement("select", {
+    value: mes,
+    onChange: function onChange(e) {
+      return setMes(parseInt(e.target.value));
+    },
+    style: _objectSpread(_objectSpread({}, INP), {}, {
+      width: "auto"
+    })
+  }, MESES.map(function (m, i) {
+    return /*#__PURE__*/React.createElement("option", {
+      key: i,
+      value: i
+    }, m);
+  }))));
+}
+
+// ─── App ──────────────────────────────────────────────────────────────────
+function App() {
+  var _useState31 = useState(function () {
+      var _raw$grupos$;
+      var raw = load();
+      if (!raw) return initState();
+      if (raw.grupos && !raw.turno) return _objectSpread(_objectSpread({}, raw), {}, {
+        turno: ((_raw$grupos$ = raw.grupos[0]) === null || _raw$grupos$ === void 0 ? void 0 : _raw$grupos$.membros) || []
+      });
+      return raw;
+    }),
+    _useState32 = _slicedToArray(_useState31, 2),
+    state = _useState32[0],
+    setState = _useState32[1];
+  var _useState33 = useState("dashboard"),
+    _useState34 = _slicedToArray(_useState33, 2),
+    tab = _useState34[0],
+    setTab = _useState34[1];
+  var _useState35 = useState(""),
+    _useState36 = _slicedToArray(_useState35, 2),
+    novaPessoa = _useState36[0],
+    setNovaPessoa = _useState36[1];
+  var _useState37 = useState(""),
+    _useState38 = _slicedToArray(_useState37, 2),
+    pessoasSearch = _useState38[0],
+    setPessoasSearch = _useState38[1];
+  var _useState39 = useState(""),
+    _useState40 = _slicedToArray(_useState39, 2),
+    turnoSearch = _useState40[0],
+    setTurnoSearch = _useState40[1];
+  var _useState41 = useState([]),
+    _useState42 = _slicedToArray(_useState41, 2),
+    alertas = _useState42[0],
+    setAlertas = _useState42[1];
+  var _useState43 = useState(null),
+    _useState44 = _slicedToArray(_useState43, 2),
+    perfilPessoa = _useState44[0],
+    setPerfilPessoa = _useState44[1];
+  var _useState45 = useState(false),
+    _useState46 = _slicedToArray(_useState45, 2),
+    modalNoite = _useState46[0],
+    setModalNoite = _useState46[1];
+  var _useState47 = useState(false),
+    _useState48 = _slicedToArray(_useState47, 2),
+    modalExport = _useState48[0],
+    setModalExport = _useState48[1];
+  var importRef = useRef();
+  var csvRef = useRef();
+  useEffect(function () {
+    save(state);
+  }, [state]);
+  useEffect(function () {
+    setAlertas(state.pessoas.filter(function (p) {
+      return alertasDuasNoites(p.id, state.noites);
+    }).map(function (p) {
+      return p.nome;
+    }));
+  }, [state]);
+  var pById = function pById(id) {
+    return state.pessoas.find(function (p) {
+      return p.id === id;
+    });
+  };
+  var addPessoa = function addPessoa(nome) {
+    var n = (nome || novaPessoa).trim();
+    if (!n || state.pessoas.find(function (p) {
+      return p.nome.toLowerCase() === n.toLowerCase();
+    })) return;
+    setState(function (s) {
+      return _objectSpread(_objectSpread({}, s), {}, {
+        pessoas: [].concat(_toConsumableArray(s.pessoas), [{
+          id: Date.now() + "" + Math.random(),
+          nome: n,
+          preferencia: "indiferente",
+          historico: {},
+          historicoFora: {}
+        }])
+      });
+    });
+    setNovaPessoa("");
+  };
+  var remPessoa = function remPessoa(id) {
+    return setState(function (s) {
+      return _objectSpread(_objectSpread({}, s), {}, {
+        pessoas: s.pessoas.filter(function (p) {
+          return p.id !== id;
+        }),
+        turno: s.turno.filter(function (t) {
+          return t !== id;
+        })
+      });
+    });
+  };
+  var updPessoa = function updPessoa(id, d) {
+    return setState(function (s) {
+      return _objectSpread(_objectSpread({}, s), {}, {
+        pessoas: s.pessoas.map(function (p) {
+          return p.id === id ? _objectSpread(_objectSpread({}, p), d) : p;
+        })
+      });
+    });
+  };
+  var importCSV = /*#__PURE__*/function () {
+    var _ref14 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
+      var file, nomes, added, _t;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.p = _context.n) {
+          case 0:
+            file = e.target.files[0];
+            if (file) {
+              _context.n = 1;
+              break;
+            }
+            return _context.a(2);
+          case 1:
+            _context.p = 1;
+            _context.n = 2;
+            return parseNomesCSV(file);
+          case 2:
+            nomes = _context.v;
+            added = 0;
+            setState(function (s) {
+              var novas = _toConsumableArray(s.pessoas);
+              nomes.forEach(function (nome) {
+                if (!novas.find(function (p) {
+                  return p.nome.toLowerCase() === nome.toLowerCase();
+                })) novas.push({
+                  id: Date.now() + "" + Math.random() + added++,
+                  nome: nome,
+                  preferencia: "indiferente",
+                  historico: {},
+                  historicoFora: {}
+                });
+              });
+              return _objectSpread(_objectSpread({}, s), {}, {
+                pessoas: novas
+              });
+            });
+            alert("".concat(nomes.length, " nomes processados."));
+            _context.n = 4;
+            break;
+          case 3:
+            _context.p = 3;
+            _t = _context.v;
+            alert("Erro: " + _t.message);
+          case 4:
+            e.target.value = "";
+          case 5:
+            return _context.a(2);
+        }
+      }, _callee, null, [[1, 3]]);
+    }));
+    return function importCSV(_x2) {
+      return _ref14.apply(this, arguments);
+    };
+  }();
+  var addTurno = function addTurno(nome) {
+    var p = state.pessoas.find(function (pp) {
+      return pp.nome === nome;
+    });
+    if (!p) return;
+    if (state.turno.includes(p.id)) return;
+    setState(function (s) {
+      return _objectSpread(_objectSpread({}, s), {}, {
+        turno: [].concat(_toConsumableArray(s.turno), [p.id])
+      });
+    });
+    setTurnoSearch("");
+  };
+  var remTurno = function remTurno(id) {
+    return setState(function (s) {
+      return _objectSpread(_objectSpread({}, s), {}, {
+        turno: s.turno.filter(function (t) {
+          return t !== id;
+        })
+      });
+    });
+  };
+  var gravarNoite = function gravarNoite(_ref15) {
+    var data = _ref15.data,
+      primeiras = _ref15.primeiras,
+      segundas = _ref15.segundas;
+    setState(function (s) {
+      return _objectSpread(_objectSpread({}, s), {}, {
+        noites: [].concat(_toConsumableArray(s.noites), [{
+          id: Date.now() + "",
+          data: data,
+          primeiras: primeiras,
+          segundas: segundas
+        }])
+      });
+    });
+    setModalNoite(false);
+  };
+  var remNoite = function remNoite(id) {
+    return setState(function (s) {
+      return _objectSpread(_objectSpread({}, s), {}, {
+        noites: s.noites.filter(function (n) {
+          return n.id !== id;
+        })
+      });
+    });
+  };
+  var importJSON = function importJSON(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      try {
+        var d = JSON.parse(ev.target.result);
+        if (d.pessoas && d.noites) {
+          setState(d);
+          alert("Importado!");
+        } else alert("Ficheiro inválido.");
+      } catch (_unused3) {
+        alert("Erro ao importar.");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
+  var TABS = [{
+    id: "dashboard",
+    label: "Dashboard"
+  }, {
+    id: "pessoas",
+    label: "Pessoas"
+  }, {
+    id: "turno",
+    label: "Turno"
+  }, {
+    id: "noites",
+    label: "Noites"
+  }, {
+    id: "estatisticas",
+    label: "Estatísticas"
+  }, {
+    id: "historico",
+    label: "Histórico"
+  }];
+
+  // Stats for display
+  var getStatsDisplay = function getStatsDisplay(p) {
+    return calcStats(p, state.noites, state.turno);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: "'Courier New',monospace",
+      minHeight: "100vh",
+      background: "#0d0d1a",
+      color: "#e2e2f0"
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    ref: importRef,
+    type: "file",
+    accept: ".json",
+    style: {
+      display: "none"
+    },
+    onChange: importJSON
+  }), /*#__PURE__*/React.createElement("input", {
+    ref: csvRef,
+    type: "file",
+    accept: ".csv,.txt",
+    style: {
+      display: "none"
+    },
+    onChange: importCSV
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "linear-gradient(135deg,#1a1a3e,#0d0d1a)",
+      borderBottom: "2px solid #3d3d7a",
+      padding: "16px 28px",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      flexWrap: "wrap",
+      gap: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 900,
+      letterSpacing: 3,
+      color: "#a78bfa"
+    }
+  }, "\uD83C\uDF19 GEST\xC3O DE TURNOS NOTURNOS"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: "#6b6b9a",
+      letterSpacing: 2
+    }
+  }, "BENEF\xCDCIOS \xB7 PRIMEIRAS \xB7 SEGUNDAS")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return setModalExport(true);
+    },
+    style: _objectSpread(_objectSpread({}, BTN("#1a3a1a")), {}, {
+      border: "1px solid #2d5a2d",
+      fontSize: 11
+    })
+  }, "\u2B07 Exportar"), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return importRef.current.click();
+    },
+    style: _objectSpread(_objectSpread({}, BTN("#1a1a3a")), {}, {
+      border: "1px solid #3d3d7a",
+      fontSize: 11
+    })
+  }, "\u2B06 Importar"))), alertas.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#3d1a00",
+      border: "1px solid #ff6600",
+      margin: "12px 28px 0",
+      borderRadius: 8,
+      padding: "10px 16px",
+      fontSize: 13
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#ff9900",
+      fontWeight: 700
+    }
+  }, "\u26A0\uFE0F ALERTA: "), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#ffcc88"
+    }
+  }, alertas.join(", "), " ", alertas.length === 1 ? "está" : "estão", " a fazer duas noites seguidas com benef\xEDcio!")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 2,
+      padding: "12px 28px 0",
+      borderBottom: "1px solid #2a2a4a",
+      flexWrap: "wrap"
+    }
+  }, TABS.map(function (t) {
+    return /*#__PURE__*/React.createElement("button", {
+      key: t.id,
+      onClick: function onClick() {
+        return setTab(t.id);
+      },
+      style: {
+        background: tab === t.id ? "#3d3d7a" : "transparent",
+        color: tab === t.id ? "#a78bfa" : "#6b6b9a",
+        border: "none",
+        borderRadius: "6px 6px 0 0",
+        padding: "8px 16px",
+        cursor: "pointer",
+        fontSize: 12,
+        fontWeight: 700,
+        letterSpacing: 1,
+        fontFamily: "inherit"
+      }
+    }, t.label);
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "22px 28px"
+    }
+  }, tab === "dashboard" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))",
+      gap: 12,
+      marginBottom: 22
+    }
+  }, [{
+    l: "Pessoas",
+    v: state.pessoas.length,
+    i: "👥"
+  }, {
+    l: "No Turno",
+    v: state.turno.length,
+    i: "🏷️"
+  }, {
+    l: "Noites",
+    v: state.noites.length,
+    i: "🌙"
+  }, {
+    l: "Alertas",
+    v: alertas.length,
+    i: "⚠️",
+    red: alertas.length > 0
+  }].map(function (c) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: c.l,
+      style: {
+        background: c.red ? "#3d1a00" : "#1a1a3e",
+        border: "1px solid ".concat(c.red ? "#ff6600" : "#3d3d7a"),
+        borderRadius: 10,
+        padding: 16
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 24
+      }
+    }, c.i), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 28,
+        fontWeight: 900,
+        color: c.red ? "#ff9900" : "#a78bfa"
+      }
+    }, c.v), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        color: "#6b6b9a"
+      }
+    }, c.l));
+  })), state.turno.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#0d1f0d",
+      border: "1px solid #2d5a2d",
+      borderRadius: 8,
+      padding: "8px 14px",
+      marginBottom: 14,
+      fontSize: 12,
+      color: "#88cc88"
+    }
+  }, "\uD83D\uDFE2 Turno: ", state.turno.map(function (id) {
+    var _pById;
+    return (_pById = pById(id)) === null || _pById === void 0 ? void 0 : _pById.nome;
+  }).filter(Boolean).join(", ")), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return setModalNoite(true);
+    },
+    style: _objectSpread(_objectSpread({}, BTN()), {}, {
+      fontSize: 14,
+      padding: "14px 32px",
+      letterSpacing: 2
+    })
+  }, "+ REGISTAR NOVA NOITE")), tab === "pessoas" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginBottom: 8,
+      flexWrap: "wrap"
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    value: novaPessoa,
+    onChange: function onChange(e) {
+      return setNovaPessoa(e.target.value);
+    },
+    onKeyDown: function onKeyDown(e) {
+      return e.key === "Enter" && addPessoa();
+    },
+    placeholder: "Nome da pessoa...",
+    style: _objectSpread(_objectSpread({}, INP), {}, {
+      flex: 1,
+      minWidth: 180
+    })
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return addPessoa();
+    },
+    style: BTN()
+  }, "Adicionar"), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return csvRef.current.click();
+    },
+    style: _objectSpread(_objectSpread({}, BTN("#1a3a2a")), {}, {
+      border: "1px solid #2d5a2d",
+      fontSize: 11
+    })
+  }, "\uD83D\uDCC2 Importar CSV")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "#6b6b9a",
+      marginBottom: 12
+    }
+  }, "CSV: .csv ou .txt com nomes por linha ou separados por v\xEDrgula."), /*#__PURE__*/React.createElement("input", {
+    value: pessoasSearch,
+    onChange: function onChange(e) {
+      return setPessoasSearch(e.target.value);
+    },
+    placeholder: "\uD83D\uDD0D Pesquisar pessoa...",
+    style: _objectSpread(_objectSpread({}, INP), {}, {
+      marginBottom: 14
+    })
+  }), state.pessoas.length === 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "#6b6b9a"
+    }
+  }, "Nenhuma pessoa adicionada."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 8
+    }
+  }, _toConsumableArray(state.pessoas).filter(function (p) {
+    return p.nome.toLowerCase().includes(pessoasSearch.toLowerCase());
+  }).sort(function (a, b) {
+    return a.nome.localeCompare(b.nome);
+  }).map(function (p) {
+    var al = alertasDuasNoites(p.id, state.noites);
+    var s = getStatsDisplay(p);
+    var noTurno = state.turno.includes(p.id);
+    return /*#__PURE__*/React.createElement("div", {
+      key: p.id,
+      style: {
+        background: al ? "#2a1000" : "#1a1a3e",
+        border: "1px solid ".concat(al ? "#ff6600" : noTurno ? "#4a3a7a" : "#3d3d7a"),
+        borderRadius: 8,
+        padding: "10px 14px",
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        flexWrap: "wrap"
+      }
+    }, noTurno && /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 9,
+        background: "#3d2d7a",
+        color: "#c4b5fd",
+        borderRadius: 3,
+        padding: "1px 5px",
+        fontWeight: 700
+      }
+    }, "TURNO"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: pc(p),
+        fontSize: 14
+      }
+    }, pi(p)), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 700,
+        fontSize: 14,
+        flex: 1
+      }
+    }, al && "⚠️ ", p.nome), p.preferencia !== "indiferente" && /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 11,
+        color: "#ffaa44"
+      }
+    }, "T:", s.turno.pctContraria, "% | F:", s.fora.pctContraria, "%"), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setPerfilPessoa(p);
+      },
+      style: _objectSpread(_objectSpread({}, BTN("#2a2a5a")), {}, {
+        fontSize: 11,
+        padding: "4px 12px"
+      })
+    }, "\u270F\uFE0F Perfil"), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return remPessoa(p.id);
+      },
+      style: {
+        background: "#3d1a1a",
+        color: "#ff6b6b",
+        border: "none",
+        borderRadius: 4,
+        padding: "4px 12px",
+        cursor: "pointer",
+        fontFamily: "inherit",
+        fontSize: 11
+      }
+    }, "Remover"));
+  }))), tab === "turno" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "#0d1020",
+      border: "1px solid #3d3d7a",
+      borderRadius: 10,
+      padding: 20
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 900,
+      fontSize: 14,
+      color: "#a78bfa",
+      marginBottom: 6,
+      letterSpacing: 1
+    }
+  }, "GRUPO DE TURNO"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: "#6b6b9a",
+      marginBottom: 16
+    }
+  }, "Pessoas do turno t\xEAm SEMPRE prioridade na distribui\xE7\xE3o e nos benef\xEDcios."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginBottom: 16
+    }
+  }, /*#__PURE__*/React.createElement(Autocomplete, {
+    value: turnoSearch,
+    onChange: setTurnoSearch,
+    options: state.pessoas.filter(function (p) {
+      return !state.turno.includes(p.id);
+    }).map(function (p) {
+      return p.nome;
+    }),
+    onSelect: function onSelect(nome) {
+      return addTurno(nome);
+    },
+    placeholder: "Escreva um nome para adicionar ao turno..."
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return addTurno(turnoSearch);
+    },
+    style: _objectSpread(_objectSpread({}, BTN()), {}, {
+      whiteSpace: "nowrap"
+    })
+  }, "Adicionar")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: "#6b6b9a",
+      marginBottom: 10
+    }
+  }, "MEMBROS (", state.turno.length, "):"), state.turno.length === 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "#4b5563",
+      fontSize: 13
+    }
+  }, "Nenhum membro no turno."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 8
+    }
+  }, state.turno.map(function (id) {
+    var p = pById(id);
+    if (!p) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      key: id,
+      style: {
+        background: "#2a1a5a",
+        border: "1px solid #a78bfa",
+        borderRadius: 8,
+        padding: "8px 14px",
+        display: "flex",
+        alignItems: "center",
+        gap: 8
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: pc(p)
+      }
+    }, pi(p)), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 700,
+        fontSize: 13
+      }
+    }, p.nome), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return remTurno(id);
+      },
+      style: {
+        background: "transparent",
+        color: "#f87171",
+        border: "none",
+        cursor: "pointer",
+        fontSize: 18,
+        lineHeight: 1
+      }
+    }, "\xD7"));
+  })))), tab === "noites" && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return setModalNoite(true);
+    },
+    style: _objectSpread(_objectSpread({}, BTN()), {}, {
+      marginBottom: 20
+    })
+  }, "+ Nova Noite"), state.noites.length === 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "#6b6b9a"
+    }
+  }, "Nenhuma noite registada."), _toConsumableArray(state.noites).sort(function (a, b) {
+    return new Date(b.data) - new Date(a.data);
+  }).map(function (n) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: n.id,
+      style: CARD
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        justifyContent: "space-between",
+        marginBottom: 10
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 900,
+        color: "#a78bfa"
+      }
+    }, "\uD83C\uDF19 ", n.data), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return remNoite(n.id);
+      },
+      style: {
+        background: "#3d1a1a",
+        color: "#ff6b6b",
+        border: "none",
+        borderRadius: 4,
+        padding: "4px 12px",
+        cursor: "pointer",
+        fontFamily: "inherit",
+        fontSize: 11
+      }
+    }, "Remover")), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 12
+      }
+    }, ["primeiras", "segundas"].map(function (parte) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: parte
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 11,
+          color: "#6b6b9a",
+          marginBottom: 6
+        }
+      }, parte === "primeiras" ? "🌑 PRIMEIRAS" : "🌒 SEGUNDAS", ":"), /*#__PURE__*/React.createElement("div", {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          gap: 3
+        }
+      }, (n[parte] || []).map(function (a) {
+        var pp = pById(a.pessoaId);
+        if (!pp) return null;
+        var corM = {
+          bom: "#16a34a",
+          mau: "#dc2626",
+          nenhum: "#4b5563"
+        };
+        return /*#__PURE__*/React.createElement("div", {
+          key: a.pessoaId,
+          style: {
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            fontSize: 12
+          }
+        }, a.eraTurno && /*#__PURE__*/React.createElement("span", {
+          style: {
+            fontSize: 8,
+            background: "#3d2d7a",
+            color: "#c4b5fd",
+            borderRadius: 2,
+            padding: "1px 4px",
+            fontWeight: 700
+          }
+        }, "T"), /*#__PURE__*/React.createElement("span", {
+          style: {
+            color: pc(pp)
+          }
+        }, pi(pp)), /*#__PURE__*/React.createElement("span", {
+          style: {
+            flex: 1
+          }
+        }, pp.nome), a.beneficio !== "nenhum" && /*#__PURE__*/React.createElement("span", {
+          style: {
+            background: corM[a.beneficio],
+            color: "#fff",
+            borderRadius: 3,
+            padding: "1px 6px",
+            fontSize: 10,
+            fontWeight: 700
+          }
+        }, a.beneficio.toUpperCase()), a.porEscolha && /*#__PURE__*/React.createElement("span", {
+          style: {
+            color: "#facc15",
+            fontSize: 10
+          }
+        }, "\u2605EC"));
+      })));
+    })));
+  })), tab === "estatisticas" && /*#__PURE__*/React.createElement("div", null, state.pessoas.length === 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "#6b6b9a"
+    }
+  }, "Sem pessoas."), ["turno", "fora"].map(function (grupo) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: grupo,
+      style: {
+        marginBottom: 28
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontWeight: 700,
+        color: "#a78bfa",
+        marginBottom: 10,
+        letterSpacing: 1,
+        fontSize: 13
+      }
+    }, grupo === "turno" ? "🏷️ COMO MEMBRO DO TURNO" : "👤 FORA DO TURNO"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        overflowX: "auto"
+      }
+    }, /*#__PURE__*/React.createElement("table", {
+      style: {
+        width: "100%",
+        borderCollapse: "collapse",
+        fontSize: 11
+      }
+    }, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", {
+      style: {
+        borderBottom: "2px solid #3d3d7a"
+      }
+    }, ["Pessoa", "Pref.", "Prim.", "Seg.", "P.Bom%", "P.Mau%", "S.Bom%", "S.Mau%", "% Contrária"].map(function (h, i) {
+      return /*#__PURE__*/React.createElement("th", {
+        key: i,
+        style: {
+          padding: "7px 10px",
+          textAlign: "left",
+          color: "#6b6b9a",
+          letterSpacing: 1,
+          whiteSpace: "nowrap"
+        }
+      }, h);
+    }))), /*#__PURE__*/React.createElement("tbody", null, state.pessoas.map(function (p) {
+      var s = getStatsDisplay(p)[grupo];
+      var al = alertasDuasNoites(p.id, state.noites);
+      var noTurno = state.turno.includes(p.id);
+      return /*#__PURE__*/React.createElement("tr", {
+        key: p.id,
+        style: {
+          borderBottom: "1px solid #2a2a4a",
+          background: al ? "#2a1000" : "transparent"
+        }
+      }, /*#__PURE__*/React.createElement("td", {
+        style: {
+          padding: "7px 10px",
+          fontWeight: 700,
+          color: al ? "#ff9900" : "#e2e2f0",
+          whiteSpace: "nowrap"
+        }
+      }, noTurno && /*#__PURE__*/React.createElement("span", {
+        style: {
+          fontSize: 8,
+          background: "#3d2d7a",
+          color: "#c4b5fd",
+          borderRadius: 2,
+          padding: "1px 4px",
+          fontWeight: 700,
+          marginRight: 4
+        }
+      }, "T"), al && "⚠️ ", p.nome), /*#__PURE__*/React.createElement("td", {
+        style: {
+          padding: "7px 10px",
+          color: pc(p)
+        }
+      }, pi(p)), /*#__PURE__*/React.createElement("td", {
+        style: {
+          padding: "7px 10px",
+          color: "#a78bfa"
+        }
+      }, s.nPrimeiras), /*#__PURE__*/React.createElement("td", {
+        style: {
+          padding: "7px 10px",
+          color: "#a78bfa"
+        }
+      }, s.nSegundas), /*#__PURE__*/React.createElement("td", {
+        style: {
+          padding: "7px 10px",
+          color: "#e6b800"
+        }
+      }, s.pctPrimBom, "%"), /*#__PURE__*/React.createElement("td", {
+        style: {
+          padding: "7px 10px",
+          color: "#e67300"
+        }
+      }, s.pctPrimMau, "%"), /*#__PURE__*/React.createElement("td", {
+        style: {
+          padding: "7px 10px",
+          color: "#4aaeff"
+        }
+      }, s.pctSegBom, "%"), /*#__PURE__*/React.createElement("td", {
+        style: {
+          padding: "7px 10px",
+          color: "#c084fc"
+        }
+      }, s.pctSegMau, "%"), /*#__PURE__*/React.createElement("td", {
+        style: {
+          padding: "7px 10px",
+          color: p.preferencia !== "indiferente" ? "#ffaa44" : "#4b5563"
+        }
+      }, p.preferencia !== "indiferente" ? "".concat(s.pctContraria, "% (").concat(s.contrariaCount, "/").concat(s.totalPref, ")") : "—"));
+    })))));
+  })), tab === "historico" && /*#__PURE__*/React.createElement(TabHistorico, {
+    state: state
+  })), modalNoite && /*#__PURE__*/React.createElement(ModalNoite, {
+    state: state,
+    onClose: function onClose() {
+      return setModalNoite(false);
+    },
+    onGravar: gravarNoite
+  }), modalExport && /*#__PURE__*/React.createElement(ModalExport, {
+    state: state,
+    onClose: function onClose() {
+      return setModalExport(false);
+    }
+  }), perfilPessoa && /*#__PURE__*/React.createElement(ModalPerfil, {
+    pessoa: perfilPessoa,
+    noites: state.noites,
+    turno: state.turno,
+    onClose: function onClose() {
+      return setPerfilPessoa(null);
+    },
+    onSave: function onSave(d) {
+      updPessoa(perfilPessoa.id, d);
+      setPerfilPessoa(null);
+    }
+  }));
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App,null));
+
+</script>
+</body>
+</html>
