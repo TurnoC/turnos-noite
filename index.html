@@ -206,6 +206,52 @@ function Autocomplete({value,onChange,options,onSelect,placeholder,disabled}){
   );
 }
 
+// ─── Shared helpers for suggestions (Bom/Mau/Balda) ───────────────────────
+function getStatsForPessoa(p,noites,turno){
+  const s=calcStats(p,noites,turno);
+  const useFora=!turno.includes(p.id)&&((p.historicoFora?.nPrimeiras||0)+(p.historicoFora?.nSegundas||0)>0);
+  return useFora?s.fora:s.turno;
+}
+
+function computeSugestoes(pessoas,turno,noites,fieldBom,fieldMau,fieldBalda){
+  if(!pessoas.length) return {bomList:[],mauList:[],baldaList:[]};
+  const getStatsFor=(p)=>getStatsForPessoa(p,noites,turno);
+  const doT=pessoas.filter(p=>turno.includes(p.id));
+  const foraT=pessoas.filter(p=>!turno.includes(p.id));
+  const candidates=doT.length>0?doT:foraT;
+  const allOrdered=[...doT,...foraT];
+  const mk=(arr,field)=>[...arr].sort((a,b)=>getStatsFor(a)[field]-getStatsFor(b)[field]).map(p=>({nome:p.nome,val:getStatsFor(p)[field],isTurno:turno.includes(p.id)}));
+  const foraB=doT.length>0?[...foraT].sort((a,b)=>getStatsFor(a)[fieldBom]-getStatsFor(b)[fieldBom]).map(p=>({nome:p.nome,val:getStatsFor(p)[fieldBom],isTurno:false})):[];
+  const foraM=doT.length>0?[...foraT].sort((a,b)=>getStatsFor(a)[fieldMau]-getStatsFor(b)[fieldMau]).map(p=>({nome:p.nome,val:getStatsFor(p)[fieldMau],isTurno:false})):[];
+  const bomList=[...mk(candidates,fieldBom),...foraB];
+  const mauList=[...mk(candidates,fieldMau),...foraM];
+  const baldaList=[...mk(allOrdered,fieldBalda)];
+  return {bomList,mauList,baldaList};
+}
+
+function SugBox({sug}){
+  if(!(sug.bomList.length>0||sug.mauList.length>0||sug.baldaList.length>0)) return null;
+  return (
+    <div style={{background:"#0d1a0d",border:"1px solid #1d4a1d",borderRadius:6,padding:"8px 10px",marginBottom:10,fontSize:10}}>
+      <div style={{color:"#4ade80",fontWeight:700,marginBottom:4}}>💡 Ordem sugerida:</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6}}>
+        {[["Bom","bomList","#4ade80"],["Mau","mauList","#f87171"],["Balda","baldaList","#f59e0b"]].map(([l,k,c])=>(
+          <div key={k}>
+            <div style={{color:c,fontWeight:700,marginBottom:2}}>{l}</div>
+            {sug[k].map((item,i)=>(
+              <div key={item.nome} style={{color:i===0?c:item.isTurno?"#3a5a3a":"#4a4a2a",marginBottom:1,display:"flex",gap:3,alignItems:"center"}}>
+                <span>{i+1}. {item.nome}</span>
+                {!item.isTurno&&<span style={{fontSize:8,color:"#888",background:"#2a2a2a",borderRadius:2,padding:"0 2px"}}>F</span>}
+                <span style={{opacity:0.5}}>({item.val}%)</span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Modal Perfil ─────────────────────────────────────────────────────────
 function ModalPerfil({pessoa,noites,turno,onSave,onClose}){
   const [nome,setNome]=useState(pessoa.nome);
@@ -374,20 +420,11 @@ function ModalEditarNoite({noite,state,onSave,onClose}){
     setL(prev=>[...prev,{pessoaId:p.id,beneficio:"nenhum",porEscolha:false,eraTurno:state.turno.includes(p.id),balda:false,prefIndiferente:null,sacrificioIndiferente:false}]);
   };
 
-  // Compute balda suggestions
-  const getBaldaSug=(pessoasDaParte,fieldBalda)=>{
-    if(!pessoasDaParte.length) return [];
-    const doT=pessoasDaParte.filter(p=>state.turno.includes(p.id));
-    const foraT=pessoasDaParte.filter(p=>!state.turno.includes(p.id));
-    const ordered=doT.length>0?[...doT,...foraT]:[...foraT];
-    const getS=(p)=>{ const s=calcStats(p,state.noites,state.turno); return state.turno.includes(p.id)?s.turno:s.fora; };
-    return [...ordered].sort((a,b)=>getS(a)[fieldBalda]-getS(b)[fieldBalda]).map(p=>({nome:p.nome,val:getS(p)[fieldBalda],isTurno:state.turno.includes(p.id)}));
-  };
-
   const pessoasP=primeiras.map(a=>pById(a.pessoaId)).filter(Boolean);
   const pessoasS=segundas.map(a=>pById(a.pessoaId)).filter(Boolean);
-  const baldaSugP=getBaldaSug(pessoasP,"pctPrimBalda");
-  const baldaSugS=getBaldaSug(pessoasS,"pctSegBalda");
+  // Live suggestions (recomputed on every render, reflecting current primeiras/segundas)
+  const sugP=computeSugestoes(pessoasP,state.turno,state.noites,"pctPrimBom","pctPrimMau","pctPrimBalda");
+  const sugS=computeSugestoes(pessoasS,state.turno,state.noites,"pctSegBom","pctSegMau","pctSegBalda");
 
   // People not yet in this parte (for search)
   const dispP=state.pessoas.filter(p=>!primeiras.find(a=>a.pessoaId===p.id))
@@ -452,8 +489,8 @@ function ModalEditarNoite({noite,state,onSave,onClose}){
         <div style={{fontWeight:900,fontSize:16,color:"#a78bfa",marginBottom:16,letterSpacing:2}}>✏️ EDITAR NOITE — {noite.data}</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,marginBottom:14}}>
           {[
-            {label:"🌑 PRIMEIRAS",lista:primeiras,setL:setPrimeiras,sug:baldaSugP,parte:"primeiras",disp:dispP,search:searchP,setSearch:setSearchP},
-            {label:"🌒 SEGUNDAS", lista:segundas, setL:setSegundas, sug:baldaSugS,parte:"segundas",disp:dispS,search:searchS,setSearch:setSearchS},
+            {label:"🌑 PRIMEIRAS",lista:primeiras,setL:setPrimeiras,sug:sugP,parte:"primeiras",disp:dispP,search:searchP,setSearch:setSearchP},
+            {label:"🌒 SEGUNDAS", lista:segundas, setL:setSegundas, sug:sugS,parte:"segundas",disp:dispS,search:searchS,setSearch:setSearchS},
           ].map(({label,lista,setL,sug,parte,disp,search,setSearch})=>(
             <div key={label} style={{background:"#12122a",borderRadius:10,padding:12,border:"1px solid #2a2a4a"}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
@@ -470,18 +507,7 @@ function ModalEditarNoite({noite,state,onSave,onClose}){
                     placeholder="+ Adicionar pessoa..."/>
                 </div>
               )}
-              {sug.length>0&&(
-                <div style={{background:"#1a1000",border:"1px solid #f59e0b33",borderRadius:6,padding:"7px 10px",marginBottom:10,fontSize:10}}>
-                  <div style={{color:"#f59e0b",fontWeight:700,marginBottom:3}}>⚡ Sugestão Balda:</div>
-                  {sug.map((item,i)=>(
-                    <div key={item.nome} style={{color:i===0?"#f59e0b":item.isTurno?"#7a6a3a":"#5a5a3a",marginBottom:1,display:"flex",gap:4}}>
-                      <span>{i+1}. {item.nome}</span>
-                      {!item.isTurno&&<span style={{fontSize:9,color:"#888",background:"#2a2a2a",borderRadius:2,padding:"0 3px"}}>F</span>}
-                      <span style={{color:"#4a3a1a"}}>({item.val}%)</span>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <SugBox sug={sug}/>
               {lista.map(a=>renderSlot(a,setL,parte,disp,search,setSearch))}
             </div>
           ))}
@@ -576,28 +602,6 @@ function ModalNoite({state,onClose,onGravar}){
     setSugS(computeSug(sP,"pctSegBom","pctSegMau","pctSegBalda"));
   };
   const canGravar=primeiras.length===4&&segundas.length===4;
-
-  const SugBox=({sug,title})=>(
-    (sug.bomList.length>0||sug.mauList.length>0||sug.baldaList.length>0)?(
-      <div style={{background:"#0d1a0d",border:"1px solid #1d4a1d",borderRadius:6,padding:"8px 10px",marginBottom:10,fontSize:10}}>
-        <div style={{color:"#4ade80",fontWeight:700,marginBottom:4}}>💡 Ordem sugerida:</div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6}}>
-          {[["Bom","bomList","#4ade80"],["Mau","mauList","#f87171"],["Balda","baldaList","#f59e0b"]].map(([l,k,c])=>(
-            <div key={k}>
-              <div style={{color:c,fontWeight:700,marginBottom:2}}>{l}</div>
-              {sug[k].map((item,i)=>(
-                <div key={item.nome} style={{color:i===0?c:item.isTurno?"#3a5a3a":"#4a4a2a",marginBottom:1,display:"flex",gap:3,alignItems:"center"}}>
-                  <span>{i+1}. {item.nome}</span>
-                  {!item.isTurno&&<span style={{fontSize:8,color:"#888",background:"#2a2a2a",borderRadius:2,padding:"0 2px"}}>F</span>}
-                  <span style={{opacity:0.5}}>({item.val}%)</span>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-    ):null
-  );
 
   return (
     <div style={{position:"fixed",inset:0,background:"#000d",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100}} onClick={e=>e.target===e.currentTarget&&onClose()}>
