@@ -557,7 +557,24 @@ function ModalNoite({state,onClose,onGravar}){
   const setPI=(pid,v,setL,parte)=>setL(prev=>prev.map(a=>a.pessoaId===pid?{...a,prefIndiferente:v?parte:null}:a));
   const setSI=(pid,v,setL)=>setL(prev=>prev.map(a=>a.pessoaId===pid?{...a,sacrificioIndiferente:v}:a));
   const temBeneficio=(pid)=>{ const ip=primeiras.find(a=>a.pessoaId===pid); const is=segundas.find(a=>a.pessoaId===pid); return (ip&&ip.beneficio!=="nenhum")||(is&&is.beneficio!=="nenhum"); };
-  const moverParte=(pid,de)=>{ if(de==="primeiras"){ const a=primeiras.find(x=>x.pessoaId===pid); setPrimeiras(prev=>prev.filter(x=>x.pessoaId!==pid)); setSegundas(prev=>[...prev,{...a,beneficio:"nenhum",porEscolha:false}]); } else { const a=segundas.find(x=>x.pessoaId===pid); setSegundas(prev=>prev.filter(x=>x.pessoaId!==pid)); setPrimeiras(prev=>[...prev,{...a,beneficio:"nenhum",porEscolha:false}]); } };
+  const moverParte=(pid,de)=>{
+    let newPrim, newSeg;
+    if(de==="primeiras"){
+      const a=primeiras.find(x=>x.pessoaId===pid);
+      newPrim=primeiras.filter(x=>x.pessoaId!==pid);
+      newSeg=[...segundas,{...a,beneficio:"nenhum",porEscolha:false}];
+    } else {
+      const a=segundas.find(x=>x.pessoaId===pid);
+      newSeg=segundas.filter(x=>x.pessoaId!==pid);
+      newPrim=[...primeiras,{...a,beneficio:"nenhum",porEscolha:false}];
+    }
+    setPrimeiras(newPrim);
+    setSegundas(newSeg);
+    const pP=newPrim.map(a=>pById(a.pessoaId)).filter(Boolean);
+    const sP=newSeg.map(a=>pById(a.pessoaId)).filter(Boolean);
+    setSugP(computeSug(pP,"pctPrimBom","pctPrimMau","pctPrimBalda"));
+    setSugS(computeSug(sP,"pctSegBom","pctSegMau","pctSegBalda"));
+  };
   const canGravar=primeiras.length===4&&segundas.length===4;
 
   const SugBox=({sug,title})=>(
