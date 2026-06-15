@@ -423,15 +423,13 @@ function ModalEditarNoite({noite,state,onSave,onClose}){
   // Move a person between primeiras <-> segundas. Resets benefit/escolha/prefIndiferente/sacrificio
   // since meaning of those fields depends on the part. Suggestions (sugP/sugS) are computed live
   // from primeiras/segundas state on every render, so they recalc automatically.
+  // No 4-person limit during editing — only enforced when saving (canGravar).
   const moverParte=(pid,de)=>{
-    if(primeiras.length+segundas.length>8) return; // safety, shouldn't happen
     if(de==="primeiras"){
-      if(segundas.length>=4) return; // destination full
       const a=primeiras.find(x=>x.pessoaId===pid);
       setPrimeiras(prev=>prev.filter(x=>x.pessoaId!==pid));
       setSegundas(prev=>[...prev,{...a,beneficio:"nenhum",porEscolha:false,prefIndiferente:null,sacrificioIndiferente:false}]);
     } else {
-      if(primeiras.length>=4) return;
       const a=segundas.find(x=>x.pessoaId===pid);
       setSegundas(prev=>prev.filter(x=>x.pessoaId!==pid));
       setPrimeiras(prev=>[...prev,{...a,beneficio:"nenhum",porEscolha:false,prefIndiferente:null,sacrificioIndiferente:false}]);
@@ -440,6 +438,7 @@ function ModalEditarNoite({noite,state,onSave,onClose}){
 
   const pessoasP=primeiras.map(a=>pById(a.pessoaId)).filter(Boolean);
   const pessoasS=segundas.map(a=>pById(a.pessoaId)).filter(Boolean);
+  const canGravarEdicao=primeiras.length===4&&segundas.length===4;
   // Live suggestions (recomputed on every render, reflecting current primeiras/segundas)
   const sugP=computeSugestoes(pessoasP,state.turno,state.noites,"pctPrimBom","pctPrimMau","pctPrimBalda");
   const sugS=computeSugestoes(pessoasS,state.turno,state.noites,"pctSegBom","pctSegMau","pctSegBalda");
@@ -517,24 +516,23 @@ function ModalEditarNoite({noite,state,onSave,onClose}){
                 <span style={{fontWeight:900,fontSize:13,color:"#a78bfa",letterSpacing:1}}>{label}</span>
                 <span style={{fontSize:12,fontWeight:700,color:lista.length===4?"#4ade80":"#f59e0b"}}>{lista.length}/4</span>
               </div>
-              {/* Add person search */}
-              {lista.length<4&&(
-                <div style={{marginBottom:10}}>
-                  <Autocomplete
-                    value={search} onChange={setSearch}
-                    options={disp.map(p=>(state.turno.includes(p.id)?"★ ":"")+p.nome)}
-                    onSelect={(nome)=>{ adicionarPessoa(lista,setL,nome); setSearch(""); }}
-                    placeholder="+ Adicionar pessoa..."/>
-                </div>
-              )}
+              {/* Add person search — always available during editing */}
+              <div style={{marginBottom:10}}>
+                <Autocomplete
+                  value={search} onChange={setSearch}
+                  options={disp.map(p=>(state.turno.includes(p.id)?"★ ":"")+p.nome)}
+                  onSelect={(nome)=>{ adicionarPessoa(lista,setL,nome); setSearch(""); }}
+                  placeholder="+ Adicionar pessoa..."/>
+              </div>
               <SugBox sug={sug}/>
               {lista.map(a=>renderSlot(a,setL,parte,disp,search,setSearch))}
             </div>
           ))}
         </div>
+        {!canGravarEdicao&&<div style={{background:"#2a1a00",border:"1px solid #f59e0b44",borderRadius:6,padding:"8px 12px",fontSize:12,color:"#f59e0b",marginBottom:12}}>⚠️ Para gravar, cada parte tem de ter exatamente 4 pessoas. Primeiras: {primeiras.length}/4 · Segundas: {segundas.length}/4</div>}
         <div style={{display:"flex",gap:10,justifyContent:"flex-end"}}>
           <button onClick={onClose} style={BTN("#2a2a4a")}>Cancelar</button>
-          <button onClick={()=>onSave({...noite,primeiras,segundas})} style={BTN()}>Guardar</button>
+          <button onClick={()=>canGravarEdicao&&onSave({...noite,primeiras,segundas})} disabled={!canGravarEdicao} style={{...BTN(),opacity:canGravarEdicao?1:0.4,cursor:canGravarEdicao?"pointer":"not-allowed"}}>Guardar</button>
         </div>
       </div>
     </div>
