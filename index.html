@@ -420,6 +420,24 @@ function ModalEditarNoite({noite,state,onSave,onClose}){
     setL(prev=>[...prev,{pessoaId:p.id,beneficio:"nenhum",porEscolha:false,eraTurno:state.turno.includes(p.id),balda:false,prefIndiferente:null,sacrificioIndiferente:false}]);
   };
 
+  // Move a person between primeiras <-> segundas. Resets benefit/escolha/prefIndiferente/sacrificio
+  // since meaning of those fields depends on the part. Suggestions (sugP/sugS) are computed live
+  // from primeiras/segundas state on every render, so they recalc automatically.
+  const moverParte=(pid,de)=>{
+    if(primeiras.length+segundas.length>8) return; // safety, shouldn't happen
+    if(de==="primeiras"){
+      if(segundas.length>=4) return; // destination full
+      const a=primeiras.find(x=>x.pessoaId===pid);
+      setPrimeiras(prev=>prev.filter(x=>x.pessoaId!==pid));
+      setSegundas(prev=>[...prev,{...a,beneficio:"nenhum",porEscolha:false,prefIndiferente:null,sacrificioIndiferente:false}]);
+    } else {
+      if(primeiras.length>=4) return;
+      const a=segundas.find(x=>x.pessoaId===pid);
+      setSegundas(prev=>prev.filter(x=>x.pessoaId!==pid));
+      setPrimeiras(prev=>[...prev,{...a,beneficio:"nenhum",porEscolha:false,prefIndiferente:null,sacrificioIndiferente:false}]);
+    }
+  };
+
   const pessoasP=primeiras.map(a=>pById(a.pessoaId)).filter(Boolean);
   const pessoasS=segundas.map(a=>pById(a.pessoaId)).filter(Boolean);
   // Live suggestions (recomputed on every render, reflecting current primeiras/segundas)
@@ -444,6 +462,8 @@ function ModalEditarNoite({noite,state,onSave,onClose}){
           <span style={{color:pc(p),fontSize:12}}>{pi(p)}</span>
           <span style={{flex:1,fontSize:13,fontWeight:600}}>{p.nome}</span>
           {naContraria&&<span style={{fontSize:9,color:"#f59e0b",fontWeight:700}}>≠pref</span>}
+          <button onClick={()=>moverParte(atrib.pessoaId,parte)}
+            style={{background:"#2a2a4a",color:"#a78bfa",border:"none",borderRadius:4,padding:"2px 7px",cursor:"pointer",fontFamily:"inherit",fontSize:10}}>{parte==="primeiras"?"→ Seg":"← Prim"}</button>
           <button onClick={()=>removerPessoa(setL,atrib.pessoaId)}
             style={{background:"#3d1a1a",color:"#f87171",border:"none",borderRadius:4,padding:"2px 8px",cursor:"pointer",fontFamily:"inherit",fontSize:11}}>× Remover</button>
         </div>
